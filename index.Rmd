@@ -1,16 +1,16 @@
 ---
-title: "My website and data analysis portfolio"
+title: "Brent Cameron: Data Analysis Portfolio"
 output: 
   html_document:
     toc: FALSE
 ---
 
-# Hello
+# Hello!
 
-### And hello again
+### Hope you're having an amazing day
 
-Welcome to **my website** and _data analysis portfolio._ 
-
+Welcome to **my MADA 2021** _data analysis portfolio._ 
 
 * Please use the `Menu Bar` above to look around.
-* Have fun!
+
+![Alt text](/Users/WWBD/Desktop/MADA/BrentCameron-MADA-portfolio/Images/Drake.jpg)

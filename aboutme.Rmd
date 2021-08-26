@@ -6,5 +6,22 @@ output:
 ---
 
 
-Add some text and a figure describing myself.
+Hello! I am a second year MPH graduate student at the University of Georgia with an emphasis on Epidemiology. I graduated from *THE* Ohio State University with a Bachelor's in Public Health. I am interested in disease study and practical uses of data to make complicated information collected become more digestible and understandable for the general population.
 
+![Alt text](/Users/WWBD/Desktop/MADA/BrentCameron-MADA-portfolio/Images/Profile.jpg)
+**Experience and Future Goals**
+
+I already have some experience with SAS and STATA through prior classes but am excited to learn about how to create, maintain, and implement an effective and easy to understand website with it's own presentation of collected data. I am learning more and more about the importance of...
+
+* Being able to create useful information
+* Being able to compile that information so that people can easily understand what you are doing and what data you have collected
+* Being able to collaborate with others through github
+
+I hope to be able to learn about github, gitkraken, and Rmarkdown 
+
+
+**What do I do outside of school?**
+
+One interesting fact about me is that I have traveled a good bit! I have visited China, Japan, Peru, the UK, the Czech Republic, and the Bahamas. I also love to play tennis, hike, and run so if anyone would be down to hit or hike sometime please feel free to reach out! 
+
+Lastly I wanted to link something I thought was interesting, which is an article about how AI is changing the freight industry. It's amazing to think how far we've come from where we were even 10 years ago in regards to data processing.[You can find the article here](https://insidebigdata.com/2021/08/20/how-ai-is-revolutionizing-the-freight-industry/)
