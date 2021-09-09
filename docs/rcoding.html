@@ -11,7 +11,7 @@
 
 
 
-<title>R coding Exercise</title>
+<title>R coding Exercise Gapminder, Tidyverse, and Plotting</title>
 
 <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -255,7 +255,7 @@ $(document).ready(function () {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="URL-TO-THIS-REPOSITORY-HERE">
+  <a href="https://github.com/B-Cameron0/BrentCameron-MADA-portfolio">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -269,12 +269,77 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">R coding Exercise</h1>
+<h1 class="title toc-ignore">R coding Exercise Gapminder, Tidyverse, and Plotting</h1>
 
 </div>
 
 
-<p>This will contain the future R coding exercise.</p>
+<p><strong>This exercise involves using the ‘gapminder’ data from the ‘dslabs’ package to plot, as well as using tidyverse to help organize the data to make it more accessible</strong></p>
+<p><strong>Please note that for this code to work completely on part 2 that the original data (not the missing data) has been chosen</strong></p>
+<p>First, we need to make sure all needed packages for the exercise are loaded using the command library(what we want to load), if not loaded (or you encounter an error of ‘x’ not found)- please install using the command install.packages(what you want to install)</p>
+<p>For example, if dslabs is not installed you would use the command…install.packages(“dslabs”)</p>
+<p><strong>PREPARATION</strong></p>
+<p><strong>Loads dslabs package</strong> library(“dslabs”)</p>
+<p><strong>Loads tidyverse (a collection of packages designed to help with cleaning data)</strong> library(“tidyverse”)</p>
+<p><strong>Loads dplyr package (allows for a variety of functions used later)</strong> library(“dplyr”)</p>
+<p><strong>Looks at help file for the gapminder data</strong> help(gapminder)</p>
+<p><strong>Get an overview of the data structure</strong> str(gapminder)</p>
+<p><strong>Get a summary of the data</strong> summary(gapminder)</p>
+<p><strong>Determines the type of object gapminder is</strong> class(gapminder)</p>
+<p><strong>PART 1</strong></p>
+<p><strong>Filtering Data and creating New Variables</strong></p>
+<p>We want to examine the data about African countries only, as a result, we will filter the data accordingly…</p>
+<p><strong>Filter out data from all African countries (variable from continent= ‘Africa’) by using filter command, also use pipeline %&lt;% to create standardized chain of commands (This will allow for easier processing aka “do this then that” )</strong></p>
+<p>Note that the first part of this code (africadata&lt;-gapminder) is needed due to the fact that we are assigning the African countries to a completely new object (africadata) for ease of analysis</p>
+<p><strong>Creates new object and assigns all African countries to it</strong> africadata&lt;- gapminder %&gt;% filter (continent == ‘Africa’)</p>
+<p>Next we will recheck the structure and summary of the new data</p>
+<p>Note that since we are using the new object (africadata) we are no longer focusing the commands on gapminder</p>
+<p><strong>Checks the structure and shows summary of the newly created object (africadata)</strong> str(africadata) summary(africadata)</p>
+<p>Now that we have created a new object (africadata) and assigned all of the desired countries to it, we need to create new variables to help us analyze the data, in this example we will use the variables infant_mortality and Life_expectancy (which will be called INFMORT.LIFEEXP (variable 1)) and population and life_expectancy (which will be called POP.LIFEEXP (variable 2)).</p>
+<p><strong>Note that we will use a similar command structure as when we assigned the gapminder data African countries to the new object africadata, only this time africadata will be replaced with our new desired objects (Variables 1 and 2 respectively)</strong></p>
+<p>Please note that we also use the ‘select’ function as a way to choose which subset of variables we want to measure</p>
+<p>We do not have to use the pipe function (%&gt;%) since we are not doing several things at once (assigning and filtering in the previous case of africadata)</p>
+<p><em>Create another object (V1) in the africadata (object) with only infant mortality and life expectancy data</em></p>
+<p>INFMORT.LIFEEXP &lt;- select(africadata, infant_mortality, life_expectancy)</p>
+<p><strong>Create another object (V2) in the africadata (object) with only population and life expectancy data</strong></p>
+<p>POP.LIFEEXP &lt;- select(africadata, population, life_expectancy)</p>
+<p><strong>We will now check the structure and summary of the two new objects we have created:</strong></p>
+<p>str(INFMORT.LIFEEXP) summary(INFMORT.LIFEEXP)</p>
+<p>str(POP.LIFEEXP) summary(POP.LIFEEXP)</p>
+<p><strong>PART 2</strong></p>
+<p><strong>Plotting</strong></p>
+<p>For this section we will plot the new variables created- life expectancy as a function of infant mortality and as a function of population size. We will make two separate plots to compare this.</p>
+<p><strong>Note that since we are trying to create scatter plots (which means multiple commands) we will reuse the pipe function of %&gt;%, making sure to use our new objects</strong></p>
+<p><strong>To create a scatter plot the command function ggplot(aes(x,y)) is used, with geom_point() being added to signal the creation of a line (x and y lab simply label the x and y axis respectively)</strong></p>
+<p>First Scatterplot of life expectancy as a function of infant mortality</p>
+<p>INFMORT.LIFEEXP %&gt;% ggplot(aes(x=infant_mortality,y=life_expectancy))+ geom_point() + xlab(‘Infant Mortality’) + ylab(‘Life Expectancy’)</p>
+<p>Second Scatterplot of life expectancy as a function of population</p>
+<p><strong>Note that here, the command scale_x_continous(trans = ‘log10’) is added along with the other commands. This is to set the x-axis to a log scale</strong></p>
+<p>POP.LIFEEXP %&gt;% ggplot(aes(x=population, y=life_expectancy))+ scale_x_continuous(trans = ‘log10’)+ geom_point() + xlab(‘Population’) + ylab(‘Life Expectancy’)</p>
+<p><strong>Notice that right now, due to multiple observation years for each country being reported, the data is disorganized and has formed ‘streaks’. To fix this, we must now narrow our data to a particular year.</strong></p>
+<p><strong>We need to determine which years have missing data first to find the best year(s) for analysis. We can do this by utilizing the select funtion (to select the variable (year) and the variable that we are using the function for(infant_mortality)) combined with the filter command and the function (is.na), which is used to determine missing variables (na stands for non-applicable).</strong></p>
+<p><strong>Note that we use the africadata object twice due to the fact that we are examining the newly created object itself rather than creating or assigning a new object.</strong></p>
+<p>africadata &lt;- africadata %&gt;% select(year, infant_mortality) %&gt;% filter(is.na(infant_mortality))</p>
+<p><strong>Now that we have determined that there are missing variables throughout the given years of the data set through 1981 and then again in 2016, we will go with thet year 2000 for the most accurate analysis.</strong></p>
+<p>Now we will extract only the year 2000 from the data</p>
+<p>africadata2000 &lt;- africadata %&gt;% filter(year == 2000)</p>
+<p>Now we will once again view the structure and summary to verify correct observations</p>
+<p>str(africadata2000) summary(africadata2000)</p>
+<p>Now that the data has been analyzed with only yeay 2000 being considered, we must now repeat the process done earlier to plot the newly separated data</p>
+<p><strong>Please note that since the new data is assigned the object name of africadata2000, the object names of INFMORT.LIFEEXP and POP.LIFEEXP from the first scatter plots are both replaced by africadata2000</strong></p>
+<p><strong>First scatter plot with new data only for year 2000</strong></p>
+<p>africadata2000 %&gt;% ggplot(aes(x=infant_mortality,y=life_expectancy))+ geom_point() + xlab(‘Infant Mortality’) + ylab(‘Life Expectancy’)</p>
+<p><strong>Second scattter plot with new data only for year 2000</strong></p>
+<p>africadata2000 %&gt;% ggplot(aes(x=population,y=life_expectancy))+ geom_point() + scale_x_continuous(trans = ‘log10’)+ xlab(‘population’) + ylab(‘Life Expectancy’)</p>
+<p><strong>The new scatter plots seem to suggest a negative correlation between infant mortality and life expectancy (still), while there is no evident correlation between population size and life expectancy.</strong></p>
+<p><strong>The last step we will need to do is to utilize linear regression models on both life expectancy and infant mortality, and life expectancy and population separately, to determine a possible link, if any.</strong></p>
+<p><strong>To do this, we first establish the object names that we want to save the models to, which in this example will be ‘fit1’ and ‘fit2’. Next, we utilize the lm function with the x-axis variable going second (infant mortality and population respectively). Finally, we utilize the summary function to gain an understanding of the models computations.</strong></p>
+<p>fit1 &lt;- lm(life_expectancy ~ infant_mortality, data = africadata2000)</p>
+<p>fit2 &lt;- lm(life_expectancy ~ population, data = africadata2000)</p>
+<p><strong>summarize</strong></p>
+<p>summary(fit1) summary(fit2)</p>
+<p><strong>Because of the final p-value of 2.826e-08 for the first model, which is less than 0.001, I can conclude that there exists a negative correlation between infant mortality and life expectancy, that is to say that for every unit of increase of infant mortality, life expectancy is predicted to decrease.</strong></p>
+<p><strong>In the second model determining if there exists a link between population and life expectancy the p-value is greater than 0.005 at 0.6159, which indicates that there is no statistically significant link between population size and life expectancy.</strong></p>
 
 
 
