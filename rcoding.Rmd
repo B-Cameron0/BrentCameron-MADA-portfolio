@@ -18,7 +18,7 @@ library("dslabs")
 
 **Loads tidyverse (a collection of packages designed to help with cleaning data)**
 ```{r}
-library("tidyverse")
+library('tidyverse')
 ```
 
 **Loads scales package (to access break formatting functions)**
@@ -36,7 +36,7 @@ library('hrbrthemes')
 library('viridis')
 ```
 
-**Loads broom package (to convert output object from lm to a table)**
+**Loads broom package (to convert output object from linear model to a table)**
 ```{r}
 library('broom')
 ```
@@ -184,7 +184,7 @@ africadata %>%
 
   
   
-**Now that we have determined that there are missing variables throughout the given years of the data set through 1981 and then again in 2016, we will go with thet year 2000 for the most accurate analysis.**
+**Now that we have determined that there are missing variables throughout the given years of the data set through 1981 and then again in 2016, we will go with the year 2000 for the most accurate analysis.**
 
 Now we will extract only the year 2000 from the data
 ```{r}
