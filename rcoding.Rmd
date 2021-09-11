@@ -26,6 +26,7 @@ library('tidyverse')
 library('scales')
 ```
 
+<<<<<<< HEAD
 **Loads hrbrthemes package (it provides additional themes, scales and components to make ggplot look nicer)**
 ```{r}
 library('hrbrthemes')
@@ -45,6 +46,8 @@ library('broom')
 library("kableExtra")
 ```
 
+=======
+>>>>>>> main
 **Looks at help file for the gapminder data**
 ```{r}
 help(gapminder)
@@ -236,11 +239,59 @@ africadata2000 %>%
 
 **The new scatter plots seem to suggest a negative correlation between infant mortality and life expectancy (still), while there is no evident correlation between population size and life expectancy.** 
 
+
+
 ## PART 3
 
-**Let's try to create a few more plots using data across all years**
+**The last step we will need to do is to utilize linear regression models on both life expectancy and infant mortality, and life expectancy and population separately, to determine a possible link, if any.**
 
-We will create a boxplot with jitter to visualize the distribution of the life expectancy across different African regions. 
+**To do this, we first establish the object names that we want to save the models to, which in this example will be 'fit1' and 'fit2'. Next, we utilize the lm function with the x-axis variable going second (infant mortality and population respectively). Finally, we utilize the summary function to gain an understanding of the models computations.**
+
+```{r}
+fit1 <- lm(life_expectancy ~ infant_mortality, data = africadata2000)
+
+fit2 <- lm(life_expectancy ~ population, data = africadata2000)
+```
+
+
+**Summarize**
+```{r}
+summary(fit1)
+summary(fit2)
+```
+
+
+Because of the final p-value of 2.826e-08 for the first model, which is less than 0.001, I can conclude that there exists a negative correlation between infant mortality and life expectancy, that is to say that for every unit of increase of infant mortality, life expectancy is predicted to decrease.
+
+In the second model determining if there exists a link between population and life expectancy the p-value is greater than 0.005 at `r round(summary(fit2)$coefficient[2,4],4)`, which indicates that there is no statistically significant link between population size and life expectancy.
+
+
+##  Additional Analysis by Tzu-Chun 
+**Let's try to create a few more plots using data across all years**
+**First, we will load a couple more packages for the tasks**
+
+**Loads hrbrthemes package (it provides additional themes, scales and components to make ggplot look nicer)**
+```{r}
+library('hrbrthemes')
+```
+
+**Loads viridis package (to access a wide range of color map that improves the graph presentation and readability)**
+```{r}
+library('viridis')
+```
+
+**Loads broom package (to convert output object from lm to a table)**
+```{r}
+library('broom')
+```
+**Loads kableExtra package (we will need this package to create nice html table)**
+```{r}
+library("kableExtra")
+```
+
+
+**I would like to know if the distribution of life expectancy varies between different African regions. To accomplish that, we will create a boxplot with jitter to visualize the distribution of the life expectancy across different African regions.** 
+
 ```{r, warning = F}
 africadata %>%
   #use fill to set a unique color for each region
@@ -268,6 +319,7 @@ africadata %>%
 
 We can see that Northern Africa had the highest life expectancy but the data were also more spread out between countries. On the contrary, other four African regions had lower and similar life expectancy.
 
+**Next, I want to know how GDP per capita across each country contributes to the change in life expectancy. The first step is to calculate the GDP per capita and create new variable by using mutate(). I then used features in ggplot2 package to create the scatter plot, but this time I will group the data by African region**
 ```{r}
 #calculate GDP per capita and create new variable 
 africadata <- africadata %>%
@@ -290,35 +342,11 @@ africadata %>%
 
 The graph demonstrated a positive correlation between GDP per capita and life expectancy across all African regions. One more thing we noticed is that the rise in life expectancy by the unit change in GDP was higher among Northern and Eastern regions, however, the the similar trend was less apparent among other regions such as Middle or Southern Africa. 
 
-## PART 4
 
-**The last step we will need to do is to utilize linear regression models on both life expectancy and infant mortality, and life expectancy and population separately, to determine a possible link, if any.**
-
-**To do this, we first establish the object names that we want to save the models to, which in this example will be 'fit1' and 'fit2'. Next, we utilize the lm function with the x-axis variable going second (infant mortality and population respectively). Finally, we utilize the summary function to gain an understanding of the models computations.**
+**Now, we will fit a multiple linear regression models that used life expectancy as outcome and both infant mortality and GDP per capita as independent variables, to evaluate the strength of the relationship and output the statistics result in a table. I also fitted the same model again but added the interaction term.**
 
 ```{r}
-fit1 <- lm(life_expectancy ~ infant_mortality, data = africadata2000)
-
-fit2 <- lm(life_expectancy ~ population, data = africadata2000)
-```
-
-
-**Summarize**
-```{r}
-summary(fit1)
-summary(fit2)
-```
-
-
-Because of the final p-value of 2.826e-08 for the first model, which is less than 0.001, I can conclude that there exists a negative correlation between infant mortality and life expectancy, that is to say that for every unit of increase of infant mortality, life expectancy is predicted to decrease.
-
-In the second model determining if there exists a link between population and life expectancy the p-value is greater than 0.005 at `r round(summary(fit2)$coefficient[2,4],4)`, which indicates that there is no statistically significant link between population size and life expectancy.
-
-
-**Now, we will fit a multiple linear regression models that used life expectancy as outcome and both infant mortality and GDP per capita as independent variables, to evaluate the strength of the relationship and output the statistics result in a table.**
-
-```{r}
-#fit a multiple linear model to regress life expectancy on infant mortality and GDP per capita using full data
+#fit a multiple linear model to regress life expectancy on infant mortality and GDP per capita using full Africa data
 fit3 <- lm(life_expectancy ~ infant_mortality + gdp_per_capita , data = africadata)
 #summarize the lm output
 summary(fit3)
@@ -329,10 +357,30 @@ fit3 %>%
   tidy() %>% 
   #round figures to show only 5 decimal places
   mutate_if(is.numeric, round, 5) %>% 
-  #create awesom HTML table
+  #create an awesome HTML table
   kbl() %>% 
   kable_paper("hover", full_width = F)
 
 ```
 
-The significant p-value (p<0.0001) for infant mortality indicated a linear relationship between infant mortality and life expectancy after adjusting for GDP per capita, and the coefficient showed that the life expectancy goes down by `r round(abs(summary(fit3)$coefficient[2,1]),2)` for every 1 unit increase in infant mortality. Similarly, we also found a linear relationship between GDP per capita and life expectancy after adjusting for infant mortality with a p-value smaller than 0.05.
+
+```{r}
+#fit a multiple linear model with interaction
+fit4 <- lm(life_expectancy ~ infant_mortality*gdp_per_capita , data = africadata)
+#summarize the lm output
+summary(fit4)
+```
+
+```{r}
+#use tidy to convert lm object to tibble
+fit4 %>% 
+  tidy() %>% 
+  #round figures to show only 5 decimal places
+  mutate_if(is.numeric, round, 5) %>% 
+  #create an awesome HTML table
+  kbl() %>% 
+  kable_paper("hover", full_width = F)
+
+```
+
+The significant p-value (p<0.0001) for infant mortality indicated a linear relationship between infant mortality and life expectancy after adjusting for GDP per capita, and the coefficient showed that the life expectancy goes down by `r round(abs(summary(fit3)$coefficient[2,1]),2)` for every 1 unit increase in infant mortality. Similarly, we also found a linear relationship between GDP per capita and life expectancy after adjusting for infant mortality with a p-value smaller than 0.05. From the statistics output of the second model, we can see that when the slope GDP per capita increased, the slope for infant mortality decreased!
