@@ -6,11 +6,10 @@ output:
 ---
 
 # Hello!
-
 ### Hope you're having an amazing day
 
 Welcome to **my MADA 2021** _data analysis portfolio._ 
 
 * Please use the `Menu Bar` above to look around.
 
-![Alt text](/Users/WWBD/Desktop/MADA/BrentCameron-MADA-portfolio/Images/Drake.jpg)
+![](/Users/WWBD/MADA/BrentCameron-MADA-portfolio/Images/Drake.jpg)

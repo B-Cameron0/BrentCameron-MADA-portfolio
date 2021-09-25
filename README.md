@@ -1,5 +1,5 @@
 # My website and data analysis portfolio
 
-It seems you have found my git repository
+You seem to have clicked on the README document!
 
-![](/Users/WWBD/Desktop/MADA/BrentCameron-MADA-portfolio/Images/Kenobi.png)
+![](/Users/WWBD/MADA/BrentCameron-MADA-portfolio/Images/Kenobi.jpg)
