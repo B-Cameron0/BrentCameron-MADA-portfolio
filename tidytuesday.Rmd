@@ -5,5 +5,94 @@ output:
     toc: FALSE
 ---
 
-This will contain the future Tidy Tuesday exercise.
+#Since this is our first time downloading a *tidytuesday* dataset, we must first 
+#install the packages to allow for downloading of the data...
+#Note that the data this week comes from the National Bureau of Economic Research with the 'nberwp' package
 
+install.packages("tidytuesdayR")
+
+#Now that we have the package installed we need to load the data for the week...
+
+```{r}
+papers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv')
+authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/authors.csv')
+programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/programs.csv')
+paper_authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv')
+paper_programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv')
+```
+#Next, we will utilize the cleaning script provided to combine the data...
+
+```{r}
+library(nberwp)
+library(tidyverse)
+
+papers %>% 
+  write_csv("2021/2021-09-28/papers.csv")
+
+authors %>% 
+  write_csv("2021/2021-09-28/authors.csv")
+
+programs %>% 
+  write_csv("2021/2021-09-28/programs.csv")
+
+paper_authors %>% 
+  write_csv("2021/2021-09-28/paper_authors.csv")
+
+paper_programs %>% 
+  write_csv("2021/2021-09-28/paper_programs.csv")
+
+joined_df <- left_join(papers, paper_authors) %>% 
+  left_join(authors) %>% 
+  left_join(paper_programs) %>% 
+  left_join(programs)%>% 
+  mutate(
+    catalogue_group = str_sub(paper, 1, 1),
+    catalogue_group = case_when(
+      catalogue_group == "h" ~ "Historical",
+      catalogue_group == "t" ~ "Technical",
+      catalogue_group == "w" ~ "General"),
+.after = paper) 
+
+joined_df
+```
+
+#Now we will look at the structure of the data and examine it...
+
+```{r}
+str(joined_df)
+```
+
+#Now that we have organized the data, we will explore the data by creating a table
+#that shows the number of each category of paper for each year...
+
+```{r}
+table1 <- table(joined_df$catalogue_group, joined_df$year)
+table1
+```
+
+#We will create another table that shows the joined program and category 
+#of each paper...
+```{r}
+table2 <- table(joined_df$program, joined_df$program_category)
+table2
+```
+
+#Finally, we will make a third table that shows the programs with their 
+#respective descriptions for further clarity...
+
+```{r}
+table3 <- table(joined_df$program, joined_df$program_desc)
+table3
+```
+
+#Now we will perform a simple scatter plot with a line of best fit to determine 
+#if there exists a pattern or trend between several different combinations of 
+#factors
+
+```{r}
+Plot1 <- ggplot(joined_df,aes('year', 'program'))+
+  geom_point(shape = 21, colour = "black", fill = "white", size = 5, stroke = 5)
+
+
+Plot1
+```
