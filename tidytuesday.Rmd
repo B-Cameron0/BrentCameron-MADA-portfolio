@@ -5,22 +5,22 @@ output:
     toc: FALSE
 ---
 
-#Since this is our first time downloading a *tidytuesday* dataset, we must first 
-#install the packages to allow for downloading of the data...
-#Note that the data this week comes from the National Bureau of Economic Research with the 'nberwp' package
+Since this is our first time downloading a *tidytuesday* dataset, we must first 
+install the packages to allow for downloading of the data...
+Note that the data this week comes from the National Bureau of Economic Research with the 'nberwp' package
 
 install.packages("tidytuesdayR")
 
-#Note that for data plotting purposes we will also be loading the ggplot2 package
+Note that for data plotting purposes we will also be loading the ggplot2 package
 
-#Make sure to install if this is your first time using the package 'ggplot2'
+Make sure to install if this is your first time using the package 'ggplot2'
 
 library(ggplot2)
 
-#The data set for this week can be found here:
-#https://github.com/rfordatascience/tidytuesday
+The data set for this week can be found here:
+https://github.com/rfordatascience/tidytuesday
 
-#Now that we have the package installed we need to load the data for the week...
+Now that we have the package installed we need to load the data for the week...
 
 ```{r}
 papers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv')
