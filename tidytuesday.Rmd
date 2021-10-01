@@ -11,6 +11,15 @@ output:
 
 install.packages("tidytuesdayR")
 
+#Note that for data plotting purposes we will also be loading the ggplot2 package
+
+#Make sure to install if this is your first time using the package 'ggplot2'
+
+library(ggplot2)
+
+#The data set for this week can be found here:
+#https://github.com/rfordatascience/tidytuesday
+
 #Now that we have the package installed we need to load the data for the week...
 
 ```{r}
@@ -20,7 +29,8 @@ programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/t
 paper_authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv')
 paper_programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv')
 ```
-#Next, we will utilize the cleaning script provided to combine the data...
+#Next, we will utilize the cleaning script provided at the link above
+#to combine the data...
 
 ```{r}
 library(nberwp)
@@ -89,10 +99,33 @@ table3
 #if there exists a pattern or trend between several different combinations of 
 #factors
 
+#The first plot shows the distribution of paper topics (descriptions) per year and where they are most concentrated in each area
 ```{r}
-Plot1 <- ggplot(joined_df,aes('year', 'program'))+
-  geom_point(shape = 21, colour = "black", fill = "white", size = 5, stroke = 5)
+
+Year_and_Program <- ggplot(joined_df, aes(year,program_desc))+
+         geom_bin_2d()
+
+Year_and_Program
+```
+
+#The second plot shows the concentration of each paper category, as can be seen 
+#from the chart, micro has become the most popular category in recent times
+
+```{r}
+Category_and_Year <- ggplot(joined_df, aes(program_category, year))+
+         geom_bin_2d()
+
+Category_and_Year
+```
 
 
-Plot1
+#The third plot further illustrates number of papers with each respective 
+#description and category based on a colored count
+
+```{r}
+Plot3 <- ggplot(joined_df, aes(program_category, program_desc))+
+        geom_bin_2d(position = position_dodge2(preserve = 'single'))+
+        scale_x_discrete(guide = guide_axis(n.dodge = 2))
+
+Plot3
 ```
