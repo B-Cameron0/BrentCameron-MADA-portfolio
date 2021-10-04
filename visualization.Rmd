@@ -29,7 +29,7 @@ Now we will load the data for examination:
 
 ```{r}
 #First, we must list the location of the data:
-data_location <- here::here('Data', 'covid-19-polls-master', 'covid_approval_toplines.csv' )
+data_location <- here::here('Data', 'covid-19-polls-master', 'covid_approval_polls.csv' )
 
 #We will now load the data:
 mydata <- read_csv(data_location)
@@ -38,15 +38,17 @@ mydata <- read_csv(data_location)
 Now we will construct a graph to help illustrate the data visually, and then 
 tweak that graph in a way that it resembles the original graph:
 ```{r}
-plot1 <-ggplot(mydata, aes(timestamp, approve_estimate)) +  
-          geom_point(size = 0.5) +
+plot1 <-ggplot(mydata, aes(start_date, approve)) +  
+          geom_point(size = 0.5) + 
           geom_smooth(span = 1) +
-          labs(x = NULL, y= NULL) +
-        ggtitle(label = "Do Americans approve of Biden’s response to the  coronavirus crisis?",  subtitle = "Biden Sworn into office") +
-        theme(plot.title = element_text(size = 12),
-        plot.subtitle = element_text(size = 8))
+          scale_y_continuous(breaks = seq(from = 20, to = 80, by = 20),
+          labels = c("20","40","60","80")) +
+          labs(x = NULL, y = NULL) +
+          ggtitle(label = "Do Americans approve of Biden’s response to the                   coronavirus crisis?",  subtitle = "Biden Sworn into office") +
+          theme(plot.title = element_text(size = 12),
+          plot.subtitle = element_text(size = 8))
     
-  
-#Now let us look at our plot to see how it compares to the other 
+
+#Now let us look at our plot to see how it compares to the original
 plot1
 ```
