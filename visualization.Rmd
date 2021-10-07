@@ -38,13 +38,13 @@ mydata <- read_csv(data_location)
 Now we will construct a graph to help illustrate the data visually, and then 
 tweak that graph in a way that it resembles the original graph:
 ```{r}
-plot1 <-ggplot(mydata, aes(start_date, approve)) +  
+plot1 <- ggplot(mydata, aes(start_date, approve)) +  
           geom_point(size = 0.5) + 
           geom_smooth(span = 1) +
           scale_y_continuous(breaks = seq(from = 20, to = 80, by = 20),
           labels = c("20","40","60","80")) +
           labs(x = NULL, y = NULL) +
-          ggtitle(label = "Do Americans approve of Biden’s response to the                   coronavirus crisis?",  subtitle = "Biden Sworn into office") +
+          ggtitle(label = "Do Americans approve of Biden’s response to the coronavirus crisis?",  subtitle = "Biden Sworn into office") +
           theme(plot.title = element_text(size = 12),
           plot.subtitle = element_text(size = 8))
     
@@ -52,3 +52,12 @@ plot1 <-ggplot(mydata, aes(start_date, approve)) +
 #Now let us look at our plot to see how it compares to the original
 plot1
 ```
+
+As you can see from the differences between the two charts, the plot produced 
+more closely matches the second plot comparing approval ratings from Democrats,
+Independents, and republicans. I experienced trouble getting a second linear 
+regression line to be created in the chart, as well as filtering the approval 
+variable to cover all parties without changing the start date variable for the 
+x-axis. With increased experience in visualizing data in the future I will be 
+able to more effectively and efficiently produce more accurate representations
+of data.

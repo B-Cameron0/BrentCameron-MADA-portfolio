@@ -396,13 +396,13 @@ $(document).ready(function () {
 tweak that graph in a way that it resembles the original graph:
 
 ```r
-plot1 &lt;-ggplot(mydata, aes(start_date, approve)) +  
+plot1 &lt;- ggplot(mydata, aes(start_date, approve)) +  
           geom_point(size = 0.5) + 
           geom_smooth(span = 1) +
           scale_y_continuous(breaks = seq(from = 20, to = 80, by = 20),
           labels = c(&quot;20&quot;,&quot;40&quot;,&quot;60&quot;,&quot;80&quot;)) +
           labs(x = NULL, y = NULL) +
-          ggtitle(label = &quot;Do Americans approve of Biden’s response to the                   coronavirus crisis?&quot;,  subtitle = &quot;Biden Sworn into office&quot;) +
+          ggtitle(label = &quot;Do Americans approve of Biden’s response to the coronavirus crisis?&quot;,  subtitle = &quot;Biden Sworn into office&quot;) +
           theme(plot.title = element_text(size = 12),
           plot.subtitle = element_text(size = 8))
     
@@ -413,6 +413,7 @@ plot1</code></pre>
 <pre><code>## Warning: Removed 3 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 <p><img src="visualization_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>As you can see from the differences between the two charts, the plot produced more closely matches the second plot comparing approval ratings from Democrats, Independents, and republicans. I experienced trouble getting a second linear regression line to be created in the chart, as well as filtering the approval variable to cover all parties without changing the start date variable for the x-axis. With increased experience in visualizing data in the future I will be able to more effectively and efficiently produce more accurate representations of data.</p>
 
 
 
