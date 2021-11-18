@@ -19,6 +19,8 @@ navbar:
           href: ./visualization.html
         - text: "Tidy Tuesday"
           href: ./tidytuesday.html
+        - text: "FluData Exploration"
+          href: ./FluData.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/B-Cameron0/BrentCameron-MADA-portfolio
