@@ -8,7 +8,7 @@ output:
 # Hello!
 ### Hope you're having an amazing day
 
-Welcome to **my MADA 2021** _data analysis portfolio._ 
+Welcome to **my MADA 2021** _data analysis portfolio._
 
 * Please use the `Menu Bar` above to look around.
 
