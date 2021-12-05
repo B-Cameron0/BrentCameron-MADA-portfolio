@@ -265,16 +265,20 @@ $(document).ready(function () {
     <li>
       <a href="./FluData.html">FluData Exploration</a>
     </li>
+    <li>
+      <a href="./MarbleRacingExploration.html">Marble Racing</a>
+    </li>
   </ul>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
+<li>
   <a href="https://github.com/B-Cameron0/BrentCameron-MADA-portfolio">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -568,7 +572,7 @@ tune_spec_TREE</code></pre>
 workflow_TREE &lt;- workflow() %&gt;%
             add_model(tune_spec_TREE) %&gt;%
             add_recipe(recipe_bodytemp) #The recipe command used here is from 
-#line 96 where we discuss creating a recipe for data and fitting
+#line 108 where we discuss creating a recipe for data and fitting
 
 #We will now specify the tuning grid
 grid_TREE &lt;- grid_regular(cost_complexity(),
@@ -627,6 +631,18 @@ resid_tree_plot
 #Now we will compare our residual plot to the null model
 tree_model_performance &lt;- res_TREE %&gt;% show_best(n=1)
 print(tree_model_performance)
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
 NA
 NA
 NA
@@ -806,6 +822,7 @@ cluster &lt;- makePSOCKcluster(5) #make PSOCKcluster stands for creating a sock
 #We will now turn off parallel clustering, the reason we turn the clustering off
 #after each use is to prevent computations and analysis from being slowed in 
 #later data analysis, fitting, modeling, etc.
+  stopCluster(cluster)
   
   #We will now evaluate our LASSO model
   lasso_tune_res %&gt;% autoplot()</code></pre>
@@ -878,7 +895,7 @@ print(lasso_performance)</code></pre>
 ##   penalty .metric .estimator  mean     n std_err .config              
 ##     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
 ## 1  0.0574 rmse    standard    1.15    25  0.0169 Preprocessor1_Model18</code></pre>
-<p>TThe mean RMSE is 1.17, which is still not very impressive, a much lower value would be preferred</p>
+<p>The mean RMSE is 1.17, which is still not very impressive, a much lower value would be preferred</p>
 </div>
 </div>
 </div>

@@ -288,6 +288,7 @@ cluster <- makePSOCKcluster(5) #make PSOCKcluster stands for creating a sock
 #We will now turn off parallel clustering, the reason we turn the clustering off
 #after each use is to prevent computations and analysis from being slowed in 
 #later data analysis, fitting, modeling, etc.
+  stopCluster(cluster)
   
   #We will now evaluate our LASSO model
   lasso_tune_res %>% autoplot()
@@ -343,7 +344,7 @@ lasso_performance <- lasso_tune_res %>%
 print(lasso_performance)
 ```
 
-TThe mean RMSE is 1.17, which is still not very impressive, a much lower value
+The mean RMSE is 1.17, which is still not very impressive, a much lower value
 would be preferred
 
 ################################

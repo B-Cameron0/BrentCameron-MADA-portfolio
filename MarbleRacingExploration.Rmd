@@ -1,14 +1,14 @@
 ---
-title: "Marble Racing Data Exploraiton"
-author: "Brent Cameron"
-date: "11/20/2021"
-output: html_document
+title: "Marble Racing Data Exploration"
+output: 
+   html_document:
+   toc: FALSE
 ---
-#Before we begin let's load some packages that we will need for the data 
-#exploration, fitting, and modeling of the data 
-*please note that If you do not have the packages installed you will have to
-first install them with the "install.packages()" command
 
+Before we begin let's load some packages that we will need for the data 
+exploration, fitting, and modeling of the data 
+please note that If you do not have the packages installed you will have to
+first install them with the "install.packages()" command
 ```{r}
 library(tidyverse) #for streamlining manipulating data
 library(tidymodels) # for streamlining fitting data to models
@@ -23,30 +23,29 @@ library(vip) #for identifying most important variables in our models (the "VIPS"
 library(skimr) #for viewing alternative information about variables
 library(doParallel) # for parallel processing for quicker tuning
 ```
-#We can now begin our data exploration/ cleaning
+We can now begin our data exploration/ cleaning
+We will start the marble racing data exploration by retrieving the data from
+it's location in github
 
-#We will start the marble racing data exploration by retrieving the data from
-#it's location in github
-
-#Get the Data
+Get the Data
 ```{r}
 marbles <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-02/marbles.csv')#Now that we have our packages installed we can begin to explore our data
 ```
 
-#Summary of our data tells us that we are dealing with mostly character 
-#type variables, with a few being numerical such as the average time of a lap
+Summary of our data tells us that we are dealing with mostly character 
+type variables, with a few being numerical such as the average time of a lap
 ```{r}
 summary(marbles)
 ```
 
-#Using the glimpse command tells us that we have variable names including
-#team name, name of the marble racing, the length of the track, number of laps,etc.
+Using the glimpse command tells us that we have variable names including
+team name, name of the marble racing, the length of the track, number of laps,etc.
 ```{r}
 glimpse(marbles)
 ```
 
-#In addition, utilizing the "skimr" package allows us to more closely 
-#view the individual variables
+In addition, utilizing the "skimr" package allows us to more closely 
+view the individual variables
 ```{r}
 skim(marbles)
 ```
@@ -55,51 +54,51 @@ skim(marbles)
 #Data Examination/ Cleaning
 ####################################
 
-#There are several variables that do not seem significant, for instance, notes is 
-#comprised of almost exlusively NA variables, while variables such as 
-#source simply show where to find the race itself on the internet
+There are several variables that do not seem significant, for instance, notes is 
+comprised of almost exlusively NA variables, while variables such as 
+source simply show where to find the race itself on the internet
 
-#We will create a copy of the dataframe to avoid manipulating the raw data
+We will create a copy of the dataframe to avoid manipulating the raw data
 ```{r}
 marbles_copy<-marbles
 ```
 
-#Although notes will be removed, some discrepancy in the data could be explained
-#by any of the (seven total) notes variables, as such, we will examine the notes, as well as the races that they correspond to, in order to determine if it would
-#be important to keep them
+Although notes will be removed, some discrepancy in the data could be explained
+by any of the (seven total) notes variables, as such, we will examine the notes, as well as the races that they correspond to, in order to determine if it would
+be important to keep them
 
-#Examine the notes 
+Examine the notes 
 ```{r}
 marbles_copy$notes[!is.na(marbles_copy$notes)]
 ```
 
-#Examine the dates and teams they correspond with
+Examine the dates and teams they correspond with
 ```{r}
 marbles_copy[!(is.na(marbles_copy$notes)), ]
 ```
 
-#It appears that each of the seven notes corresponds to an individual marble
-#(one marble did not have a particularly bad day)(although four out of the 
-#seven happened on March 29, 2020)
+It appears that each of the seven notes corresponds to an individual marble
+(one marble did not have a particularly bad day)(although four out of the 
+seven happened on March 29, 2020)
 
-#In addition, the notes may serve as valuable later, we will not keep the notes
-#variable in our final dataset but will keep them here for reference in case
-#of any strange occurences
+In addition, the notes may serve as valuable later, we will not keep the notes
+variable in our final dataset but will keep them here for reference in case
+of any strange occurences
 
-#Now that we have examined the "notes" variable to determine if anything is 
-#out of the ordinary, we will now clean our data by getting rid of all "NA"
-#in our variables
+Now that we have examined the "notes" variable to determine if anything is 
+out of the ordinary, we will now clean our data by getting rid of all "NA"
+in our variables
 
-#We will select the variables that we think will be useful, for now we will
-#select every variable that is not "source", "host", "pole", "points", and "notes"
+We will select the variables that we think will be useful, for now we will
+select every variable that is not "source", "host", "pole", "points", and "notes"
 
-#For ease of dropping the missing variables between "poles" and "points", we 
-#will simply drop the variables
+For ease of dropping the missing variables between "poles" and "points", we 
+will simply drop the variables
 ```{r}
 marbles_chosen <-marbles_copy %>% select(c(date, race, site, marble_name, team_name, time_s, track_length_m, number_laps, avg_time_lap))
 ```
 
-#Now we drop all "NA" data from our variables
+Now we drop all "NA" data from our variables
 ```{r}
 marbles_cleaned <- marbles_chosen %>% na.omit()
 ```
@@ -108,46 +107,46 @@ marbles_cleaned <- marbles_chosen %>% na.omit()
 #Exploration
 ##################
 
-#With our basic cleaning completed we will turn to examining our data more closely
-#to identify the best predictor variables for our models
+With our basic cleaning completed we will turn to examining our data more closely
+to identify the best predictor variables for our models
 
-#First we will plot the average time it takes for the marbles to make a lap
+First we will plot the average time it takes for the marbles to make a lap
 ```{r}
 timeplot1 <-ggplot(marbles_cleaned,aes(avg_time_lap, number_laps)) +
 geom_bar(stat = "identity") 
 timeplot1 
 ```
 
-#It makes sense that the average lap time would be clustered together (average around 30), since with the exception of marble material or track set up for the #races, there are not many other factors that come into play in regards to time of race
+It makes sense that the average lap time would be clustered together (average around 30), since with the exception of marble material or track set up for the races, there are not many other factors that come into play in regards to time of race
 
-#We will now plot to see the interaction between time and track length
-#We will also use color to differentiate and identify any causation that could be found
+We will now plot to see the interaction between time and track length
+We will also use color to differentiate and identify any causation that could be found
 ```{r}
 timeplot2 <- ggplot(marbles_cleaned,aes(track_length_m, time_s, col = factor(number_laps))) +
 geom_point()
 timeplot2
 ```
 
-#It seems that time and track length can be predicted by number of laps
+It seems that time and track length can be predicted by number of laps
 ```{r}
 timeplot3 <- ggplot(marbles_cleaned,aes(number_laps,track_length_m)) + geom_point() + geom_smooth()
 timeplot3
 ```
 
-#It seems that the most common number of laps is seven while the most common
-#track length is 15 meters
+It seems that the most common number of laps is seven while the most common
+track length is 15 meters
 
-#We will use avg_time_lap for our main predictor
+We will use avg_time_lap for our main predictor
 #######################
 #Analysis
 #######################
 
-#Now that we have finished examining our data, we will start our analysis by
-#separating our data into a training set for tuning and evaluating the models,
-#and a test set to compare our results to ensure strength of fit
+Now that we have finished examining our data, we will start our analysis by
+separating our data into a training set for tuning and evaluating the models,
+and a test set to compare our results to ensure strength of fit
 
-#We first set our seed, which is simply initializing a pseudorandom number generator (makes sure we get the same results each time we run the data (can be any number of choice though)),
-#then we split the data
+We first set our seed, which is simply initializing a pseudorandom number generator (makes sure we get the same results each time we run the data (can be any number of choice though)),
+then we split the data
 ```{r}
 set.seed(123)
 
@@ -173,27 +172,27 @@ recipe_avg_time_lap <-recipe(avg_time_lap ~ ., data = train_data) %>%
 #######################
 #Tuning and Modeling
 #######################
-#Now that we have decided on what our main predictor variable will be 
-#(avg_time_lap) and created our data sets (training and test), we can begin 
-#tuning and modeling
+Now that we have decided on what our main predictor variable will be 
+(avg_time_lap) and created our data sets (training and test), we can begin 
+tuning and modeling
 
-#We will fit a null model, single tree model, LASSO model, and a random forest model (total of four)
-#Our steps should be as follows...
-#1. Model Specification
-#2. Workflow Definition
-#3. Tuning Grid Specification
-#4. Tuning Using Cross- Validation and the tune_grid() function
+We will fit a null model, single tree model, LASSO model, and a random forest model (total of four)
+Our steps should be as follows...
+1. Model Specification
+2. Workflow Definition
+3. Tuning Grid Specification
+4. Tuning Using Cross- Validation and the tune_grid() function
 
-#Code Used for Tree model can be found from Tidymodels Tutorial 
-#https://www.tidymodels.org/start/tuning/
+Code Used for Tree model can be found from Tidymodels Tutorial 
+https://www.tidymodels.org/start/tuning/
 
 ####################################
 #NULL MODEL
 ####################################
-#Before we can adequately assess if any of our models posess good fit of our data
-#we need to first create our null model that we can compare the rest of our models
-#to, if none of our other models perform better than the Null, they are not worth 
-#pursuing
+Before we can adequately assess if any of our models posess good fit of our data
+we need to first create our null model that we can compare the rest of our models
+to, if none of our other models perform better than the Null, they are not worth 
+pursuing
 
 We need to specify our model before we start computing
 ```{r}
@@ -220,13 +219,12 @@ test_null_recipe %>% augment(newdata = test_data) %>%
   rmse(truth = avg_time_lap, estimate = .fitted)
 ```
 
-#When comparing our models, if the RMSE (our chosen measure of significance) of
-#our other models is worse than what the null model 
+When comparing our models, if the RMSE (our chosen measure of significance) of our other models is worse than what the null model 
 
 ####################################
 #SINGLE TREE MODEL
 ####################################
-#We will now start with our first comparison model (the single tree model)
+We will now start with our first comparison model (the single tree model)
 ```{r}
 #Specify Model
 tune_spec_TREE <-
@@ -246,7 +244,7 @@ workflow_TREE <- workflow() %>%
             add_recipe(recipe_avg_time_lap) 
 ```
 
-#We will now specify the tuning grid
+We will now specify the tuning grid
 ```{r}
 grid_TREE <- grid_regular(cost_complexity(),
                           tree_depth(),
@@ -254,20 +252,20 @@ grid_TREE <- grid_regular(cost_complexity(),
 grid_TREE
 ```
 
-#We will now tune using cross validation and the tune_grid() function
+We will now tune using cross validation and the tune_grid() function
 ```{r}
 res_TREE<-
   workflow_TREE %>%
   tune_grid(resamples = FoldCV5 , grid = grid_TREE, metrics = metric_set(rmse))
 ```
 
-#Now we will run the autoplot() function to look at some diagnostics
+Now we will run the autoplot() function to look at some diagnostics
 ```{r}
 res_TREE %>%
   autoplot()
 ```
 
-#Now we will selecect the best decision tree model
+Now we will select the best decision tree model
 ```{r}
 TOP_TREE <- res_TREE %>% 
   select_best("rmse")
@@ -275,30 +273,30 @@ TOP_TREE <- res_TREE %>%
 TOP_TREE
 ```
 
-#Now we need to finalize the workflow
+Now we need to finalize the workflow
 ```{r}
 workflow_FINAL <- workflow_TREE %>% finalize_workflow(TOP_TREE)
 workflow_FINAL
 ```
 
-#Now we will utilize the fit() function to fit to the training data
+Now we will utilize the fit() function to fit to the training data
 ```{r}
 fit_FINAL_TREE <- workflow_FINAL %>% last_fit(data_split)
 ```
 
 
-#Now we will collect the data from our fit
+Now we will collect the data from our fit
 ```{r}
 fit_FINAL_TREE %>% collect_metrics()
 ```
 
-#We will also collect the predictions
+We will also collect the predictions
 ```{r}
 pred_TREE <- fit_FINAL_TREE %>% collect_predictions()
 ```
 
-#We will now make two plots, one that shows model predictions from the tuned
-#model compared to actual outcomes, and one that plots residuals (RMSE)
+We will now make two plots, one that shows model predictions from the tuned
+model compared to actual outcomes, and one that plots residuals (RMSE)
 ```{r}
 pred_tree_plot <- ggplot(data = pred_TREE, aes(x = .pred, y = avg_time_lap)) + 
            geom_point() +
@@ -308,13 +306,13 @@ pred_tree_plot <- ggplot(data = pred_TREE, aes(x = .pred, y = avg_time_lap)) +
 pred_tree_plot
 ```
 
-#We need to calculate our residuals before we can plot the second chart
-#Note that the residuals is the difference between our main predictor and the others
+We need to calculate our residuals before we can plot the second chart
+Note that the residuals is the difference between our main predictor and the others
 ```{r}
 pred_TREE$residuals <- pred_TREE$avg_time_lap - pred_TREE$.pred
 ```
 
-#Now we will plot our residuals
+Now we will plot our residuals
 ```{r}
 resid_tree_plot <- ggplot(data= pred_TREE, aes(x=.pred , y=residuals)) + geom_point() +
                     labs(title="Plot of Residuals",
@@ -323,19 +321,19 @@ resid_tree_plot <- ggplot(data= pred_TREE, aes(x=.pred , y=residuals)) + geom_po
 resid_tree_plot 
 ```
 
-#Now we will compare our residual plot to the null model
+Now we will compare our residual plot to the null model
 ```{r}
 tree_model_performance <- res_TREE %>% show_best(n=1)
 print(tree_model_performance)
 ```
 
-#The null tree and decision tree model perform very similarly, with the new model
-#performing only slightly better than the null, lets examine the other models
+The null tree and decision tree model perform very similarly, with the new model
+performing only slightly better than the null, lets examine the other models
 #########################################
 #LASSO
 #########################################
-#Now we will construct a LASSO model
-#code used from https://www.tidymodels.org/start/case-study/
+Now we will construct a LASSO model
+code used from https://www.tidymodels.org/start/case-study/
 
 ```{r}
 #We will once again start by constructing our model
@@ -344,20 +342,20 @@ lasso_model <- linear_reg() %>%
   set_engine("glmnet") %>%
   set_args(penalty = tune(), mixture = 1) 
 ```
-#Please note that mixture refers to a number between zero and one that is the 
-#proportion of L1 regularization (lasso) in the model. In other, words, because
-#we are using mixture = 1, we are utilizing a "pure" lasso model here
+Please note that mixture refers to a number between zero and one that is the 
+proportion of L1 regularization (lasso) in the model. In other, words, because
+we are using mixture = 1, we are utilizing a "pure" lasso model here
 
-#We will now create our workflow
+We will now create our workflow
 ```{r}
 lasso_workflow <-workflow() %>%
   add_model(lasso_model) %>%
   add_recipe(recipe_avg_time_lap)
 ```
 
-#Now we will tune our LASSO model
-#As our last model took a long time to run, we will utilize parallel computing
-#to make it faster
+Now we will tune our LASSO model
+As our last model took a long time to run, we will utilize parallel computing
+to make it faster
 ```{r}
 library(doParallel)
 ncores = 5 #Ncores is used to select the number of cores you want to recruit
@@ -369,7 +367,7 @@ cluster <- makePSOCKcluster(5) #make PSOCKcluster stands for creating a sock
   registerDoParallel(5) #registers parallel backend with foreach package
 ```
 
-#Now we will create our tuning grid 
+Now we will create our tuning grid 
 ```{r}
   lasso_reg_grid <- tibble(penalty = 10^seq(-3, 0, length.out = 30))
   #Now we tune the model
@@ -379,15 +377,19 @@ cluster <- makePSOCKcluster(5) #make PSOCKcluster stands for creating a sock
               control = control_grid(save_pred = TRUE),
               metrics = metric_set(rmse))
 ```
-#We will now turn off parallel clustering, the reason we turn the clustering off
-#after each use is to prevent computations and analysis from being slowed in 
-#later data analysis, fitting, modeling, etc.
+We will now turn off parallel clustering, the reason we turn the clustering off
+after each use is to prevent computations and analysis from being slowed in 
+later data analysis, fitting, modeling, etc.
+```{r}
+stopCluster(cluster)
+```
+
   
-#We will now evaluate our LASSO model
+We will now evaluate our LASSO model
 ```{r}
 lasso_tune_res %>% autoplot()
 ```
-#Now we will get the tuned model that performs best
+Now we will get the tuned model that performs best
 ```{r}
   best_lasso <- lasso_tune_res %>% select_best(metric = "rmse")
   #We now finalize our workflow with the best model
@@ -399,43 +401,43 @@ lasso_tune_res %>% autoplot()
   lasso_pred <- predict(best_lasso_fit, train_data)
 ```
 
-#Now we will repeat our steps like the past model and plot LASSO variables as
-#a function of tuning parameter
+Now we will repeat our steps like the past model and plot LASSO variables as
+a function of tuning parameter
 ```{r}
 x <- best_lasso_fit$fit$fit$fit
 plot(x, "lambda")
 ```
 
-#When a variable is 0 it is no longer being used in the model, thus we are using
-#all variables that are only part of the best fit model
+When a variable is 0 it is no longer being used in the model, thus we are using
+all variables that are only part of the best fit model
 ```{r}
 tidy(extract_fit_parsnip(best_lasso_fit)) %>% filter(estimate !=0)
 ```
 
-#Now we plot the observed/predicted and residual plots
-#We will try a new way to plot that does not require calculating the 
-#residuals before hand
+Now we plot the observed/predicted and residual plots
+We will try a new way to plot that does not require calculating the 
+residuals before hand
 
-#First we will plot with the observe/predicted values
-#This code will plot a line with which we hope to see overlap with 
-#the values, thus signaling that the model is a good fit
+First we will plot with the observe/predicted values
+This code will plot a line with which we hope to see overlap with 
+the values, thus signaling that the model is a good fit
 
-#For our x and y limits, the values 10 and 100 were chosen because they allow for
-#the clearest illustration of the values in the plane
-#The abline is used to add lines to the graph 
+For our x and y limits, the values 10 and 100 were chosen because they allow for
+the clearest illustration of the values in the plane
+The abline is used to add lines to the graph 
 ```{r}
 plot(lasso_pred$.pred,train_data$avg_time_lap, xlim = c(10, 50), ylim = c(10, 100))
 abline(a = 0, b = 1, col = 'red') #b = 1 creates a 45 degree diagonal line
 ```
-#Now our residual plot, note that because we are subtracting the two values 
-#used this time instead of putting them together, since residuals are by 
-#definition the difference between the regular predictors and the chosen predictor
+Now our residual plot, note that because we are subtracting the two values 
+used this time instead of putting them together, since residuals are by 
+definition the difference between the regular predictors and the chosen predictor
 ```{r}
 plot(lasso_pred$.pred-train_data$avg_time_lap)
 abline(a=0, b=0, col = 'blue') #b = 0 creates a straight horizontal line
 ```
 
-#Let's look at the performance of the model
+Let's look at the performance of the model
 ```{r}
 lasso_performance <- lasso_tune_res %>%
                         show_best(n = 1)
@@ -443,7 +445,7 @@ lasso_performance <- lasso_tune_res %>%
 print(lasso_performance)
 ```
 
-#The Lasso model seems to have better fit than than null, we will continue with out last #model to determine if it is better
+The Lasso model seems to have better fit than than null, we will continue with out last #model to determine if it is better
 ################################
 #RANDOMFOREST
 ################################
@@ -453,7 +455,7 @@ steps with a random forest model in the hopes of finding significance
 *Please note that for Random Forest models, "num.threads" and importance 
 is required or else all models will fail*
 
-#Repeat the steps of the last models in tuning and setting workflow
+Repeat the steps of the last models in tuning and setting workflow
 ```{r}
 randomforest_model <- rand_forest() %>%
   set_args(mtry = tune(),
@@ -468,7 +470,7 @@ randomforest_model <- rand_forest() %>%
   set_mode("regression")
 ```
 
-#We will set our workflow once again
+We will set our workflow once again
 ```{r}
 randomforest_workflow <- workflow() %>% 
   add_model(randomforest_model) %>%
@@ -476,22 +478,22 @@ randomforest_workflow <- workflow() %>%
 ```
 
 
-#We will now repeat our steps as the first two models to specify our tuning grid
-#We will use parallel computing once again to vastly decrease the time it takes 
-#to compute the model- since we have already use code previously to create it
-#we now only need to use our name designation for our cluster and it will resume
+We will now repeat our steps as the first two models to specify our tuning grid
+We will use parallel computing once again to vastly decrease the time it takes 
+to compute the model- since we have already use code previously to create it
+we now only need to use our name designation for our cluster and it will resume
 ```{r}
 cluster <-makePSOCKcluster(5)
 registerDoParallel(5)
 ```
 
-#Now we will tune the grid
+Now we will tune the grid
 ```{r}
 randomforest_grid <- expand.grid(mtry = c(3, 4, 5, 6), min_n = c(40, 50, 60),
                                  trees = c(500, 1000))
 ```
 
-#We will now tune the model while optimizing RMSE
+We will now tune the model while optimizing RMSE
 ```{r}
 randomforest_tune_res <- randomforest_workflow %>%
     tune_grid(resamples = FoldCV5, #This is the name of our previous CV object
@@ -499,61 +501,61 @@ randomforest_tune_res <- randomforest_workflow %>%
               metrics = metric_set(rmse))
 ```
 
-#Now we turn off our parallel clustering again to prevent slowing processing
+Now we turn off our parallel clustering again to prevent slowing processing
 ```{r}
 stopCluster(cluster)
 ```
 
-#Now we plot the performance of our different tuning parameters
+Now we plot the performance of our different tuning parameters
 ```{r}
 randomforest_tune_res %>% autoplot()
 ```
 
-#Now we will obtain the best performing model
+Now we will obtain the best performing model
 ```{r}
 best_randomforest <- randomforest_tune_res %>% select_best(metric = "rmse")
 ```
 
-#Finalize the workflow with this model
+Finalize the workflow with this model
 ```{r}
 best_randomforest_workflow <- randomforest_workflow %>% finalize_workflow(best_randomforest)
 ```
 
-#Now we fit the best performing model
+Now we fit the best performing model
 ```{r}
 best_randomforest_fit <- best_randomforest_workflow %>% fit(data = train_data)
 randomforest_predict <-predict(best_randomforest_fit, train_data)
 ```
 
-#although all variables stay in a random forest model, we can examine which are 
-#the most imoportant using the 'vip' package
+although all variables stay in a random forest model, we can examine which are 
+the most imoportant using the 'vip' package
 ```{r}
 x<- best_randomforest_fit$fit$fit$fit
 ```
 
-#plot the variables by importance
+plot the variables by importance
 ```{r}
 vip(x, num_features = 10)
 ```
-#as can be seen from the plot, track length is the strongest factor, with 
-#time_s being second. This makes sense as length of the course and time of 
-#laps are both key when determining how long it will take to complete the race
+as can be seen from the plot, track length is the strongest factor, with 
+time_s being second. This makes sense as length of the course and time of 
+laps are both key when determining how long it will take to complete the race
 
-#We will now plot the observed/ predicted and residual plots and compare them
-#we will repeat the same process used as last time
+We will now plot the observed/ predicted and residual plots and compare them
+we will repeat the same process used as last time
 ```{r}
 plot(randomforest_predict$.pred,train_data$avg_time_lap, 
      xlim =c(10, 50), ylim=c(10, 50),
      abline(a = 0, b = 1, col = 'red'))
 ```
 
-#residual plot
+residual plot
 ```{r}
 plot(randomforest_predict$.pred-train_data$avg_time_lap)
      abline(a = 0, b = 0, col = 'blue')
 ```
      
-#now that we have finished plotting lets look at our model performance
+now that we have finished plotting lets look at our model performance
 ```{r}
 randomforest_performance <- randomforest_tune_res %>% show_best(n = 1)
 print(randomforest_performance)
@@ -574,46 +576,48 @@ cluster<- makePSOCKcluster(5)
 registerDoParallel(5)
 ```
 
-#Now we will fit on the training set evaluating with the test data
+Now we will fit on the training set evaluating with the test data
 ```{r}
 LASSO_fit_final <-best_lasso_wf %>% last_fit(data_split)
 ```
 
-#We will now use a trained workflow to predict using our 
-#test data
+We will now use a trained workflow to predict using our 
+test data
 ```{r}
 final_test_performance<-LASSO_fit_final %>% collect_predictions()
 print(final_test_performance)
 ```
-#We will also collect our metrics since it tells us more information
+We will also collect our metrics since it tells us more information
 ```{r}
 final_test_performance_RMSE <- LASSO_fit_final %>% collect_metrics()
 print(final_test_performance_RMSE)
 ```
 
-#When comparing the prediction of our final model with the actual data, it 
-#appears somewhat close but could definitely be better, which indicates that we mostly avoided overfitting, but there may be one or two things we could improve
+Finally we will turn of our paralell processing one last time
+When comparing the prediction of our final model with the actual data, it 
+appears somewhat close but could definitely be better, which indicates that we mostly avoided overfitting, but there may be one or two things we could improve
+```{r}
+stopCluster(cluster)
+```
 
-#unfortunately, when we examine the RMSE of our data we can see that it performs
-#similarly as with the last data. While this shows the model is fairly consistent
-#it still indicates that the model is not an adequate fit for our data
+unfortunately, when we examine the RMSE of our data we can see that it performs similarly as with the last data. While this shows the model is fairly consistent
+it still indicates that the model is not an adequate fit for our data
 
-#We will finally plot our final models predicted compared with observed values
-#and another plot for residuals
+We will finally plot our final models predicted compared with observed values
+and another plot for residuals
 
-#predicted versus observed 
+predicted versus observed 
 ```{r}
 plot(final_test_performance$.pred, test_data$avg_time_lap, 
      xlim = c (10, 50), ylim = c(10, 50))
      abline(a = 0, b = 1, col = 'red')
 ```
      
-#residual plot
+residual plot
 ```{r}
 plot(final_test_performance$.pred-test_data$avg_time_lap)
      abline(a = 0, b = 0, col = 'red')
 ```
 
-#While the LASSO model performed best, there appears to be a few things that we can improve upon to make the model fit better. Additionally, the track length feature could be used as another, perhaps more adequate, measure of model
-#performance.
-
+While the LASSO model performed best, there appears to be a few things that we can improve upon to make the model fit better. Additionally, the track length feature could be used as another, perhaps more adequate, measure of model
+performance.

@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Brent Cameron" />
+
+<meta name="date" content="2021-11-20" />
+
+<title>Marble Racing Data Exploration</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Data Analysis Portfolio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="./aboutme.html">About Me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./rcoding.html">R Coding</a>
+    </li>
+    <li>
+      <a href="./visualization.html">Visualization</a>
+    </li>
+    <li>
+      <a href="./tidytuesday.html">Tidy Tuesday</a>
+    </li>
+    <li>
+      <a href="./FluData.html">FluData Exploration</a>
+    </li>
+    <li>
+      <a href="./MarbleRacingExploration.html">Marble Racing</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/B-Cameron0/BrentCameron-MADA-portfolio">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Marble Racing Data Exploration</h1>
+<h4 class="author">Brent Cameron</h4>
+<h4 class="date">11/20/2021</h4>
+
+</div>
+
+
+<p>Before we begin let’s load some packages that we will need for the data exploration, fitting, and modeling of the data please note that If you do not have the packages installed you will have to first install them with the “install.packages()” command</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co">#for streamlining manipulating data</span></span></code></pre></div>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels) <span class="co"># for streamlining fitting data to models</span></span></code></pre></div>
+<pre><code>## Registered S3 method overwritten by &#39;tune&#39;:
+##   method                   from   
+##   required_pkgs.model_spec parsnip</code></pre>
+<pre><code>## ── Attaching packages ────────────────────────────────────── tidymodels 0.1.3 ──</code></pre>
+<pre><code>## ✓ broom        0.7.9      ✓ rsample      0.1.0 
+## ✓ dials        0.0.10     ✓ tune         0.1.6 
+## ✓ infer        1.0.0      ✓ workflows    0.2.3 
+## ✓ modeldata    0.1.1      ✓ workflowsets 0.1.0 
+## ✓ parsnip      0.1.7      ✓ yardstick    0.0.8 
+## ✓ recipes      0.1.16</code></pre>
+<pre><code>## ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
+## x scales::discard() masks purrr::discard()
+## x dplyr::filter()   masks stats::filter()
+## x recipes::fixed()  masks stringr::fixed()
+## x dplyr::lag()      masks stats::lag()
+## x yardstick::spec() masks readr::spec()
+## x recipes::step()   masks stats::step()
+## • Use tidymodels_prefer() to resolve common conflicts.</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="co">#for cleaning up output from lm()</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here) <span class="co">#for data loading/saving</span></span></code></pre></div>
+<pre><code>## here() starts at /Users/WWBD/MADA/BrentCameron-MADA-portfolio</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co">#for plotting</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder) <span class="co">#For reordering bar charts to be more easily understood</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart) <span class="co">#for fitting tree model</span></span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;rpart&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dials&#39;:
+## 
+##     prune</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet) <span class="co">#for fitting LASSO model</span></span></code></pre></div>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loaded glmnet 4.1-3</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ranger) <span class="co">#for fitting random forest model</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vip) <span class="co">#for identifying most important variables in our models (the &quot;VIPS&quot;)</span></span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;vip&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:utils&#39;:
+## 
+##     vi</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr) <span class="co">#for viewing alternative information about variables</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel) <span class="co"># for parallel processing for quicker tuning</span></span></code></pre></div>
+<pre><code>## Loading required package: foreach</code></pre>
+<pre><code>## 
+## Attaching package: &#39;foreach&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:purrr&#39;:
+## 
+##     accumulate, when</code></pre>
+<pre><code>## Loading required package: iterators</code></pre>
+<pre><code>## Loading required package: parallel</code></pre>
+<p>We can now begin our data exploration/ cleaning We will start the marble racing data exploration by retrieving the data from it’s location in github</p>
+<p>Get the Data</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>marbles <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-02/marbles.csv&#39;</span>)<span class="co">#Now that we have our packages installed we can begin to explore our data</span></span></code></pre></div>
+<pre><code>## Rows: 256 Columns: 14</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (9): date, race, site, source, marble_name, team_name, pole, host, notes
+## dbl (5): time_s, points, track_length_m, number_laps, avg_time_lap</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>Summary of our data tells us that we are dealing with mostly character type variables, with a few being numerical such as the average time of a lap</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(marbles)</span></code></pre></div>
+<pre><code>##      date               race               site              source         
+##  Length:256         Length:256         Length:256         Length:256        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##  marble_name         team_name             time_s           pole          
+##  Length:256         Length:256         Min.   : 17.76   Length:256        
+##  Class :character   Class :character   1st Qu.: 28.40   Class :character  
+##  Mode  :character   Mode  :character   Median : 36.28   Mode  :character  
+##                                        Mean   :190.84                     
+##                                        3rd Qu.:338.16                     
+##                                        Max.   :492.01                     
+##                                        NA&#39;s   :3                          
+##      points       track_length_m   number_laps     avg_time_lap  
+##  Min.   : 0.000   Min.   :11.90   Min.   : 1.00   Min.   :17.76  
+##  1st Qu.: 0.000   1st Qu.:12.62   1st Qu.: 1.00   1st Qu.:25.94  
+##  Median : 3.000   Median :13.02   Median : 5.00   Median :30.05  
+##  Mean   : 6.453   Mean   :13.22   Mean   : 6.25   Mean   :29.70  
+##  3rd Qu.:11.250   3rd Qu.:14.13   3rd Qu.:10.25   3rd Qu.:33.65  
+##  Max.   :26.000   Max.   :14.55   Max.   :16.00   Max.   :41.62  
+##  NA&#39;s   :128                                      NA&#39;s   :3      
+##      host              notes          
+##  Length:256         Length:256        
+##  Class :character   Class :character  
+##  Mode  :character   Mode  :character  
+##                                       
+##                                       
+##                                       
+## </code></pre>
+<p>Using the glimpse command tells us that we have variable names including team name, name of the marble racing, the length of the track, number of laps,etc.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(marbles)</span></code></pre></div>
+<pre><code>## Rows: 256
+## Columns: 14
+## $ date           &lt;chr&gt; &quot;15-Feb-20&quot;, &quot;15-Feb-20&quot;, &quot;15-Feb-20&quot;, &quot;15-Feb-20&quot;, &quot;15…
+## $ race           &lt;chr&gt; &quot;S1Q1&quot;, &quot;S1Q1&quot;, &quot;S1Q1&quot;, &quot;S1Q1&quot;, &quot;S1Q1&quot;, &quot;S1Q1&quot;, &quot;S1Q1&quot;,…
+## $ site           &lt;chr&gt; &quot;Savage Speedway&quot;, &quot;Savage Speedway&quot;, &quot;Savage Speedway&quot;…
+## $ source         &lt;chr&gt; &quot;https://youtu.be/JtsQ_UydjEI?t=356&quot;, &quot;https://youtu.be…
+## $ marble_name    &lt;chr&gt; &quot;Clementin&quot;, &quot;Starry&quot;, &quot;Momo&quot;, &quot;Yellow&quot;, &quot;Snowy&quot;, &quot;Razz…
+## $ team_name      &lt;chr&gt; &quot;O&#39;rangers&quot;, &quot;Team Galactic&quot;, &quot;Team Momo&quot;, &quot;Mellow Yell…
+## $ time_s         &lt;dbl&gt; 28.11, 28.37, 28.40, 28.70, 28.71, 28.72, 28.96, 29.11,…
+## $ pole           &lt;chr&gt; &quot;P1&quot;, &quot;P2&quot;, &quot;P3&quot;, &quot;P4&quot;, &quot;P5&quot;, &quot;P6&quot;, &quot;P7&quot;, &quot;P8&quot;, &quot;P9&quot;, &quot;…
+## $ points         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+## $ track_length_m &lt;dbl&gt; 12.81, 12.81, 12.81, 12.81, 12.81, 12.81, 12.81, 12.81,…
+## $ number_laps    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10, 10,…
+## $ avg_time_lap   &lt;dbl&gt; 28.11, 28.37, 28.40, 28.70, 28.71, 28.72, 28.96, 29.11,…
+## $ host           &lt;chr&gt; &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;…
+## $ notes          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…</code></pre>
+<p>In addition, utilizing the “skimr” package allows us to more closely view the individual variables</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(marbles)</span></code></pre></div>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">marbles</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">256</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">14</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">9</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">5</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">date</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">race</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">site</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">7</td>
+<td align="right">15</td>
+<td align="right">0</td>
+<td align="right">8</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">source</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">34</td>
+<td align="right">34</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">marble_name</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">4</td>
+<td align="right">9</td>
+<td align="right">0</td>
+<td align="right">32</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">team_name</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">6</td>
+<td align="right">16</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">pole</td>
+<td align="right">128</td>
+<td align="right">0.50</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">host</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">notes</td>
+<td align="right">249</td>
+<td align="right">0.03</td>
+<td align="right">37</td>
+<td align="right">100</td>
+<td align="right">0</td>
+<td align="right">7</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">time_s</td>
+<td align="right">3</td>
+<td align="right">0.99</td>
+<td align="right">190.84</td>
+<td align="right">169.13</td>
+<td align="right">17.76</td>
+<td align="right">28.40</td>
+<td align="right">36.28</td>
+<td align="right">338.16</td>
+<td align="right">492.01</td>
+<td align="left">▇▁▁▇▁</td>
+</tr>
+<tr class="even">
+<td align="left">points</td>
+<td align="right">128</td>
+<td align="right">0.50</td>
+<td align="right">6.45</td>
+<td align="right">7.74</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">3.00</td>
+<td align="right">11.25</td>
+<td align="right">26.00</td>
+<td align="left">▇▂▂▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">track_length_m</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">13.22</td>
+<td align="right">0.95</td>
+<td align="right">11.90</td>
+<td align="right">12.62</td>
+<td align="right">13.02</td>
+<td align="right">14.13</td>
+<td align="right">14.55</td>
+<td align="left">▅▅▂▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">number_laps</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">6.25</td>
+<td align="right">5.53</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="right">5.00</td>
+<td align="right">10.25</td>
+<td align="right">16.00</td>
+<td align="left">▇▁▃▂▂</td>
+</tr>
+<tr class="odd">
+<td align="left">avg_time_lap</td>
+<td align="right">3</td>
+<td align="right">0.99</td>
+<td align="right">29.70</td>
+<td align="right">5.55</td>
+<td align="right">17.76</td>
+<td align="right">25.94</td>
+<td align="right">30.05</td>
+<td align="right">33.65</td>
+<td align="right">41.62</td>
+<td align="left">▃▆▇▇▂</td>
+</tr>
+</tbody>
+</table>
+<div id="section" class="section level36">
+<p class="heading"></p>
+<p>#Data Examination/ Cleaning ####################################</p>
+<p>There are several variables that do not seem significant, for instance, notes is comprised of almost exlusively NA variables, while variables such as source simply show where to find the race itself on the internet</p>
+<p>We will create a copy of the dataframe to avoid manipulating the raw data</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>marbles_copy<span class="ot">&lt;-</span>marbles</span></code></pre></div>
+<p>Although notes will be removed, some discrepancy in the data could be explained by any of the (seven total) notes variables, as such, we will examine the notes, as well as the races that they correspond to, in order to determine if it would be important to keep them</p>
+<p>Examine the notes</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>marbles_copy<span class="sc">$</span>notes[<span class="sc">!</span><span class="fu">is.na</span>(marbles_copy<span class="sc">$</span>notes)]</span></code></pre></div>
+<pre><code>## [1] &quot;Note: Came to complete stop in Lap 14&quot;                                                               
+## [2] &quot;*Note: A yellow SAFETY flag is issued due to incident in Lap 1.&quot;                                     
+## [3] &quot;Shortly after, a red SUSPENDED flag is issued to restart the race, due to major blockage.&quot;           
+## [4] &quot;**Note: Upon the restart, another red flag is issued due to a track invasion incident by a rowdy fan&quot;
+## [5] &quot;Race resumed normally after the culprit is escorted by security marbles&quot;                             
+## [6] &quot;*Note: Slight incident between Speedy and Clementin&quot;                                                 
+## [7] &quot;Ultimately, JMRC reviews and deems no action is necessary&quot;</code></pre>
+<p>Examine the dates and teams they correspond with</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>marbles_copy[<span class="sc">!</span>(<span class="fu">is.na</span>(marbles_copy<span class="sc">$</span>notes)), ]</span></code></pre></div>
+<pre><code>## # A tibble: 7 × 14
+##   date      race  site          source marble_name team_name time_s pole  points
+##   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;
+## 1 22-Mar-20 S1R6  Short Circuit https… Sublime     Limers      NA   &lt;NA&gt;       0
+## 2 29-Mar-20 S1R7  Razzway       https… Smoggy      Hazers     331.  &lt;NA&gt;      25
+## 3 29-Mar-20 S1R7  Razzway       https… Orangin     O&#39;rangers  332.  &lt;NA&gt;      19
+## 4 29-Mar-20 S1R7  Razzway       https… Anarchy     Balls of…  334.  &lt;NA&gt;      10
+## 5 29-Mar-20 S1R7  Razzway       https… Rapidly     Savage S…  336.  &lt;NA&gt;       6
+## 6 4-Apr-20  S1Q8  Midnight Bay  https… Speedy      Savage S…   24.5 P1        NA
+## 7 4-Apr-20  S1Q8  Midnight Bay  https… Clutter     Balls of…   25.2 P3        NA
+## # … with 5 more variables: track_length_m &lt;dbl&gt;, number_laps &lt;dbl&gt;,
+## #   avg_time_lap &lt;dbl&gt;, host &lt;chr&gt;, notes &lt;chr&gt;</code></pre>
+<p>It appears that each of the seven notes corresponds to an individual marble (one marble did not have a particularly bad day)(although four out of the seven happened on March 29, 2020)</p>
+<p>In addition, the notes may serve as valuable later, we will not keep the notes variable in our final dataset but will keep them here for reference in case of any strange occurences</p>
+<p>Now that we have examined the “notes” variable to determine if anything is out of the ordinary, we will now clean our data by getting rid of all “NA” in our variables</p>
+<p>We will select the variables that we think will be useful, for now we will select every variable that is not “source”, “host”, “pole”, “points”, and “notes”</p>
+<p>For ease of dropping the missing variables between “poles” and “points”, we will simply drop the variables</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>marbles_chosen <span class="ot">&lt;-</span>marbles_copy <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(date, race, site, marble_name, team_name, time_s, track_length_m, number_laps, avg_time_lap))</span></code></pre></div>
+<p>Now we drop all “NA” data from our variables</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>marbles_cleaned <span class="ot">&lt;-</span> marbles_chosen <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span></code></pre></div>
+</div>
+<div id="section-1" class="section level18">
+<p class="heading"></p>
+<p>#Exploration ##################</p>
+<p>With our basic cleaning completed we will turn to examining our data more closely to identify the best predictor variables for our models</p>
+<p>First we will plot the average time it takes for the marbles to make a lap</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>timeplot1 <span class="ot">&lt;-</span><span class="fu">ggplot</span>(marbles_cleaned,<span class="fu">aes</span>(avg_time_lap, number_laps)) <span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>timeplot1 </span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>It makes sense that the average lap time would be clustered together (average around 30), since with the exception of marble material or track set up for the races, there are not many other factors that come into play in regards to time of race</p>
+<p>We will now plot to see the interaction between time and track length We will also use color to differentiate and identify any causation that could be found</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>timeplot2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(marbles_cleaned,<span class="fu">aes</span>(track_length_m, time_s, <span class="at">col =</span> <span class="fu">factor</span>(number_laps))) <span class="sc">+</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>()</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>timeplot2</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>It seems that time and track length can be predicted by number of laps</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>timeplot3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(marbles_cleaned,<span class="fu">aes</span>(number_laps,track_length_m)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>()</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>timeplot3</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : pseudoinverse used at 0.925</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : neighborhood radius 9.075</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : reciprocal condition number 0</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : There are other near singularities as well. 81</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
+## 0.925</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
+## 9.075</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
+## number 0</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : There are other near
+## singularities as well. 81</code></pre>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>It seems that the most common number of laps is seven while the most common track length is 15 meters</p>
+<p>We will use avg_time_lap for our main predictor ####################### #Analysis #######################</p>
+<p>Now that we have finished examining our data, we will start our analysis by separating our data into a training set for tuning and evaluating the models, and a test set to compare our results to ensure strength of fit</p>
+<p>We first set our seed, which is simply initializing a pseudorandom number generator (makes sure we get the same results each time we run the data (can be any number of choice though)), then we split the data</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now split the data by 70% for our training data and 30% for our testing</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(marbles_cleaned, <span class="at">prop =</span> <span class="dv">7</span><span class="sc">/</span><span class="dv">10</span>,<span class="co">#7/10 stands for 70% training</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">strata =</span> avg_time_lap) <span class="co"># and the rest (30%) for testing) </span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will organize our sets of training and test data</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now utilize a 5-fold cross validation, 5 times repeated, we will </span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="co">#stratify on &quot;avg_time_lap&quot; for the CV folds</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>FoldCV5 <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train_data, <span class="at">v =</span> <span class="dv">5</span>, <span class="at">repeats =</span> <span class="dv">5</span>, <span class="at">strata =</span> <span class="st">&quot;avg_time_lap&quot;</span>)</span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will create our recipe for our data and fitting</span></span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a><span class="co">#We will code the categorical variables as dummy variables</span></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>recipe_avg_time_lap <span class="ot">&lt;-</span><span class="fu">recipe</span>(avg_time_lap <span class="sc">~</span> ., <span class="at">data =</span> train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span></code></pre></div>
+<div id="section-2" class="section level23">
+<p class="heading"></p>
+<p>#Tuning and Modeling ####################### Now that we have decided on what our main predictor variable will be (avg_time_lap) and created our data sets (training and test), we can begin tuning and modeling</p>
+<p>We will fit a null model, single tree model, LASSO model, and a random forest model (total of four) Our steps should be as follows… 1. Model Specification 2. Workflow Definition 3. Tuning Grid Specification 4. Tuning Using Cross- Validation and the tune_grid() function</p>
+<p>Code Used for Tree model can be found from Tidymodels Tutorial <a href="https://www.tidymodels.org/start/tuning/" class="uri">https://www.tidymodels.org/start/tuning/</a></p>
+<div id="section-3" class="section level36">
+<p class="heading"></p>
+<p>#NULL MODEL #################################### Before we can adequately assess if any of our models posess good fit of our data we need to first create our null model that we can compare the rest of our models to, if none of our other models perform better than the Null, they are not worth pursuing</p>
+<p>We need to specify our model before we start computing</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">set_engine</span>(<span class="st">&#39;lm&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">set_mode</span>(<span class="st">&#39;regression&#39;</span>)</span></code></pre></div>
+<p>We will now compute the performance of a null model for our training and test data (doesn’t use any predictor information)</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Train Data Computing</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>train_null_recipe <span class="ot">&lt;-</span> <span class="fu">lm</span>(avg_time_lap <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> train_data)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating RMSE</span></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>train_null_recipe <span class="sc">%&gt;%</span> <span class="fu">augment</span>(<span class="at">newdata =</span> train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">rmse</span>(<span class="at">truth =</span> avg_time_lap, <span class="at">estimate =</span> .fitted)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard        5.63</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Test Data Computing</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>test_null_recipe <span class="ot">&lt;-</span> <span class="fu">lm</span>(avg_time_lap <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> test_data)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating RMSE</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>test_null_recipe <span class="sc">%&gt;%</span> <span class="fu">augment</span>(<span class="at">newdata =</span> test_data) <span class="sc">%&gt;%</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rmse</span>(<span class="at">truth =</span> avg_time_lap, <span class="at">estimate =</span> .fitted)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard        5.30</code></pre>
+<p>When comparing our models, if the RMSE (our chosen measure of significance) of our other models is worse than what the null model</p>
+</div>
+<div id="section-4" class="section level36">
+<p class="heading"></p>
+<p>#SINGLE TREE MODEL #################################### We will now start with our first comparison model (the single tree model)</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Specify Model</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>tune_spec_TREE <span class="ot">&lt;-</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">decision_tree</span>(</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cost_complexity =</span> <span class="fu">tune</span>(),</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tree_depth =</span> <span class="fu">tune</span>(),</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;rpart&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>tune_spec_TREE</span></code></pre></div>
+<pre><code>## Decision Tree Model Specification (regression)
+## 
+## Main Arguments:
+##   cost_complexity = tune()
+##   tree_depth = tune()
+## 
+## Computational engine: rpart</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now define the workflow for the tree </span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>workflow_TREE <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">add_model</span>(tune_spec_TREE) <span class="sc">%&gt;%</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">add_recipe</span>(recipe_avg_time_lap) </span></code></pre></div>
+<p>We will now specify the tuning grid</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>grid_TREE <span class="ot">&lt;-</span> <span class="fu">grid_regular</span>(<span class="fu">cost_complexity</span>(),</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">tree_depth</span>(),</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="dv">5</span>)</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>grid_TREE</span></code></pre></div>
+<pre><code>## # A tibble: 25 × 2
+##    cost_complexity tree_depth
+##              &lt;dbl&gt;      &lt;int&gt;
+##  1    0.0000000001          1
+##  2    0.0000000178          1
+##  3    0.00000316            1
+##  4    0.000562              1
+##  5    0.1                   1
+##  6    0.0000000001          4
+##  7    0.0000000178          4
+##  8    0.00000316            4
+##  9    0.000562              4
+## 10    0.1                   4
+## # … with 15 more rows</code></pre>
+<p>We will now tune using cross validation and the tune_grid() function</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>res_TREE<span class="ot">&lt;-</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  workflow_TREE <span class="sc">%&gt;%</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(<span class="at">resamples =</span> FoldCV5 , <span class="at">grid =</span> grid_TREE, <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse))</span></code></pre></div>
+<p>Now we will run the autoplot() function to look at some diagnostics</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>res_TREE <span class="sc">%&gt;%</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Now we will select the best decision tree model</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>TOP_TREE <span class="ot">&lt;-</span> res_TREE <span class="sc">%&gt;%</span> </span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_best</span>(<span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>TOP_TREE</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##   cost_complexity tree_depth .config              
+##             &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;                
+## 1    0.0000000001          8 Preprocessor1_Model11</code></pre>
+<p>Now we need to finalize the workflow</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>workflow_FINAL <span class="ot">&lt;-</span> workflow_TREE <span class="sc">%&gt;%</span> <span class="fu">finalize_workflow</span>(TOP_TREE)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>workflow_FINAL</span></code></pre></div>
+<pre><code>## ══ Workflow ════════════════════════════════════════════════════════════════════
+## Preprocessor: Recipe
+## Model: decision_tree()
+## 
+## ── Preprocessor ────────────────────────────────────────────────────────────────
+## 1 Recipe Step
+## 
+## • step_dummy()
+## 
+## ── Model ───────────────────────────────────────────────────────────────────────
+## Decision Tree Model Specification (regression)
+## 
+## Main Arguments:
+##   cost_complexity = 1e-10
+##   tree_depth = 8
+## 
+## Computational engine: rpart</code></pre>
+<p>Now we will utilize the fit() function to fit to the training data</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>fit_FINAL_TREE <span class="ot">&lt;-</span> workflow_FINAL <span class="sc">%&gt;%</span> <span class="fu">last_fit</span>(data_split)</span></code></pre></div>
+<p>Now we will collect the data from our fit</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>fit_FINAL_TREE <span class="sc">%&gt;%</span> <span class="fu">collect_metrics</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 4
+##   .metric .estimator .estimate .config             
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+## 1 rmse    standard       0.567 Preprocessor1_Model1
+## 2 rsq     standard       0.989 Preprocessor1_Model1</code></pre>
+<p>We will also collect the predictions</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>pred_TREE <span class="ot">&lt;-</span> fit_FINAL_TREE <span class="sc">%&gt;%</span> <span class="fu">collect_predictions</span>()</span></code></pre></div>
+<p>We will now make two plots, one that shows model predictions from the tuned model compared to actual outcomes, and one that plots residuals (RMSE)</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>pred_tree_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> pred_TREE, <span class="fu">aes</span>(<span class="at">x =</span> .pred, <span class="at">y =</span> avg_time_lap)) <span class="sc">+</span> </span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Plot Comparing Model Predictions from Tuned to Actual&quot;</span>,</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">x =</span> <span class="st">&quot;Predictions&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Outcomes&quot;</span>)</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="co">#view the plot</span></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>pred_tree_plot</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>We need to calculate our residuals before we can plot the second chart Note that the residuals is the difference between our main predictor and the others</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>pred_TREE<span class="sc">$</span>residuals <span class="ot">&lt;-</span> pred_TREE<span class="sc">$</span>avg_time_lap <span class="sc">-</span> pred_TREE<span class="sc">$</span>.pred</span></code></pre></div>
+<p>Now we will plot our residuals</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>resid_tree_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span> pred_TREE, <span class="fu">aes</span>(<span class="at">x=</span>.pred , <span class="at">y=</span>residuals)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Plot of Residuals&quot;</span>,</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">x=</span><span class="st">&quot;Predictions&quot;</span>, <span class="at">y=</span> <span class="st">&quot;Residuals&quot;</span>)</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="co">#view the plot</span></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>resid_tree_plot </span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>Now we will compare our residual plot to the null model</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>tree_model_performance <span class="ot">&lt;-</span> res_TREE <span class="sc">%&gt;%</span> <span class="fu">show_best</span>(<span class="at">n=</span><span class="dv">1</span>)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tree_model_performance)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 8
+##   cost_complexity tree_depth .metric .estimator  mean     n std_err .config     
+##             &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;       
+## 1    0.0000000001          8 rmse    standard   0.943    25  0.0529 Preprocesso…</code></pre>
+<p>The null tree and decision tree model perform very similarly, with the new model performing only slightly better than the null, lets examine the other models ######################################### #LASSO ######################################### Now we will construct a LASSO model code used from <a href="https://www.tidymodels.org/start/case-study/" class="uri">https://www.tidymodels.org/start/case-study/</a></p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co">#We will once again start by constructing our model</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>lasso_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;glmnet&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_args</span>(<span class="at">penalty =</span> <span class="fu">tune</span>(), <span class="at">mixture =</span> <span class="dv">1</span>) </span></code></pre></div>
+<p>Please note that mixture refers to a number between zero and one that is the proportion of L1 regularization (lasso) in the model. In other, words, because we are using mixture = 1, we are utilizing a “pure” lasso model here</p>
+<p>We will now create our workflow</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>lasso_workflow <span class="ot">&lt;-</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(lasso_model) <span class="sc">%&gt;%</span></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_avg_time_lap)</span></code></pre></div>
+<p>Now we will tune our LASSO model As our last model took a long time to run, we will utilize parallel computing to make it faster</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>ncores <span class="ot">=</span> <span class="dv">5</span> <span class="co">#Ncores is used to select the number of cores you want to recruit</span></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="co">#for processing, different computers will naturally have different ideal numbers</span></span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">makePSOCKcluster</span>(<span class="dv">5</span>) <span class="co">#make PSOCKcluster stands for creating a sock</span></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a><span class="co">#cluster within the &#39;snow&#39; package, this allowsa for increased computing time</span></span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">registerDoParallel</span>(<span class="dv">5</span>) <span class="co">#registers parallel backend with foreach package</span></span></code></pre></div>
+<p>Now we will create our tuning grid</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>  lasso_reg_grid <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">penalty =</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">0</span>, <span class="at">length.out =</span> <span class="dv">30</span>))</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Now we tune the model</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  lasso_tune_res <span class="ot">&lt;-</span> lasso_workflow <span class="sc">%&gt;%</span></span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tune_grid</span>(<span class="at">resamples =</span> FoldCV5,</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">grid =</span> lasso_reg_grid,</span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">control =</span> <span class="fu">control_grid</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse))</span></code></pre></div>
+<p>We will now turn off parallel clustering, the reason we turn the clustering off after each use is to prevent computations and analysis from being slowed in later data analysis, fitting, modeling, etc.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cluster)</span></code></pre></div>
+<p>We will now evaluate our LASSO model</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>lasso_tune_res <span class="sc">%&gt;%</span> <span class="fu">autoplot</span>()</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-36-1.png" width="672" /> Now we will get the tuned model that performs best</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>  best_lasso <span class="ot">&lt;-</span> lasso_tune_res <span class="sc">%&gt;%</span> <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#We now finalize our workflow with the best model</span></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  best_lasso_wf <span class="ot">&lt;-</span> lasso_workflow  <span class="sc">%&gt;%</span> <span class="fu">finalize_workflow</span>(best_lasso)</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#We now fit our best performing model</span></span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>  best_lasso_fit <span class="ot">&lt;-</span> best_lasso_wf <span class="sc">%&gt;%</span></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(<span class="at">data =</span> train_data)</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>  lasso_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(best_lasso_fit, train_data)</span></code></pre></div>
+<p>Now we will repeat our steps like the past model and plot LASSO variables as a function of tuning parameter</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> best_lasso_fit<span class="sc">$</span>fit<span class="sc">$</span>fit<span class="sc">$</span>fit</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="st">&quot;lambda&quot;</span>)</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p>When a variable is 0 it is no longer being used in the model, thus we are using all variables that are only part of the best fit model</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(<span class="fu">extract_fit_parsnip</span>(best_lasso_fit)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(estimate <span class="sc">!=</span><span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 38 × 3
+##    term            estimate penalty
+##    &lt;chr&gt;              &lt;dbl&gt;   &lt;dbl&gt;
+##  1 (Intercept)     -28.2     0.0574
+##  2 time_s            0.0114  0.0574
+##  3 track_length_m    4.18    0.0574
+##  4 date_X14.Mar.20   1.88    0.0574
+##  5 date_X15.Mar.20   3.47    0.0574
+##  6 date_X16.Feb.20   0.156   0.0574
+##  7 date_X21.Mar.20  -1.09    0.0574
+##  8 date_X23.Feb.20   0.237   0.0574
+##  9 date_X28.Mar.20  -0.554   0.0574
+## 10 date_X29.Feb.20  -0.161   0.0574
+## # … with 28 more rows</code></pre>
+<p>Now we plot the observed/predicted and residual plots We will try a new way to plot that does not require calculating the residuals before hand</p>
+<p>First we will plot with the observe/predicted values This code will plot a line with which we hope to see overlap with the values, thus signaling that the model is a good fit</p>
+<p>For our x and y limits, the values 10 and 100 were chosen because they allow for the clearest illustration of the values in the plane The abline is used to add lines to the graph</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lasso_pred<span class="sc">$</span>.pred,train_data<span class="sc">$</span>avg_time_lap, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">50</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">100</span>))</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>) <span class="co">#b = 1 creates a 45 degree diagonal line</span></span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-40-1.png" width="672" /> Now our residual plot, note that because we are subtracting the two values used this time instead of putting them together, since residuals are by definition the difference between the regular predictors and the chosen predictor</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lasso_pred<span class="sc">$</span>.pred<span class="sc">-</span>train_data<span class="sc">$</span>avg_time_lap)</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">0</span>, <span class="at">b=</span><span class="dv">0</span>, <span class="at">col =</span> <span class="st">&#39;blue&#39;</span>) <span class="co">#b = 0 creates a straight horizontal line</span></span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p>Let’s look at the performance of the model</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>lasso_performance <span class="ot">&lt;-</span> lasso_tune_res <span class="sc">%&gt;%</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">show_best</span>(<span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(lasso_performance)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 7
+##   penalty .metric .estimator  mean     n std_err .config              
+##     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+## 1  0.0574 rmse    standard   0.872    25  0.0376 Preprocessor1_Model18</code></pre>
+<p>The Lasso model seems to have better fit than than null, we will continue with out last #model to determine if it is better ################################ #RANDOMFOREST ################################ Both of our past models have not extremely significant fit, we will now repeat the steps with a random forest model in the hopes of finding significance</p>
+<p><em>Please note that for Random Forest models, “num.threads” and importance is required or else all models will fail</em></p>
+<p>Repeat the steps of the last models in tuning and setting workflow</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>randomforest_model <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_args</span>(<span class="at">mtry =</span> <span class="fu">tune</span>(),</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">trees =</span> <span class="fu">tune</span>(), </span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_n =</span> <span class="fu">tune</span>()</span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Now we set the engine</span></span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;ranger&quot;</span>, </span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">num.threads =</span> <span class="dv">5</span>,</span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">importance =</span> <span class="st">&quot;permutation&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#We select either the continuous or binary classification</span></span>
+<span id="cb97-11"><a href="#cb97-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</span></code></pre></div>
+<p>We will set our workflow once again</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>randomforest_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(randomforest_model) <span class="sc">%&gt;%</span></span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_avg_time_lap)</span></code></pre></div>
+<p>We will now repeat our steps as the first two models to specify our tuning grid We will use parallel computing once again to vastly decrease the time it takes to compute the model- since we have already use code previously to create it we now only need to use our name designation for our cluster and it will resume</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span><span class="fu">makePSOCKcluster</span>(<span class="dv">5</span>)</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(<span class="dv">5</span>)</span></code></pre></div>
+<p>Now we will tune the grid</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>randomforest_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">mtry =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">min_n =</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>),</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">trees =</span> <span class="fu">c</span>(<span class="dv">500</span>, <span class="dv">1000</span>))</span></code></pre></div>
+<p>We will now tune the model while optimizing RMSE</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>randomforest_tune_res <span class="ot">&lt;-</span> randomforest_workflow <span class="sc">%&gt;%</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tune_grid</span>(<span class="at">resamples =</span> FoldCV5, <span class="co">#This is the name of our previous CV object</span></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">grid =</span> randomforest_grid,<span class="co">#This is the grid of values we want to try</span></span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse))</span></code></pre></div>
+<p>Now we turn off our parallel clustering again to prevent slowing processing</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cluster)</span></code></pre></div>
+<p>Now we plot the performance of our different tuning parameters</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>randomforest_tune_res <span class="sc">%&gt;%</span> <span class="fu">autoplot</span>()</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p>Now we will obtain the best performing model</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>best_randomforest <span class="ot">&lt;-</span> randomforest_tune_res <span class="sc">%&gt;%</span> <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span></code></pre></div>
+<p>Finalize the workflow with this model</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>best_randomforest_workflow <span class="ot">&lt;-</span> randomforest_workflow <span class="sc">%&gt;%</span> <span class="fu">finalize_workflow</span>(best_randomforest)</span></code></pre></div>
+<p>Now we fit the best performing model</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>best_randomforest_fit <span class="ot">&lt;-</span> best_randomforest_workflow <span class="sc">%&gt;%</span> <span class="fu">fit</span>(<span class="at">data =</span> train_data)</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>randomforest_predict <span class="ot">&lt;-</span><span class="fu">predict</span>(best_randomforest_fit, train_data)</span></code></pre></div>
+<p>although all variables stay in a random forest model, we can examine which are the most imoportant using the ‘vip’ package</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span> best_randomforest_fit<span class="sc">$</span>fit<span class="sc">$</span>fit<span class="sc">$</span>fit</span></code></pre></div>
+<p>plot the variables by importance</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vip</span>(x, <span class="at">num_features =</span> <span class="dv">10</span>)</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-54-1.png" width="672" /> as can be seen from the plot, track length is the strongest factor, with time_s being second. This makes sense as length of the course and time of laps are both key when determining how long it will take to complete the race</p>
+<p>We will now plot the observed/ predicted and residual plots and compare them we will repeat the same process used as last time</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(randomforest_predict<span class="sc">$</span>.pred,train_data<span class="sc">$</span>avg_time_lap, </span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span><span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">50</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">50</span>),</span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>))</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p>residual plot</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(randomforest_predict<span class="sc">$</span>.pred<span class="sc">-</span>train_data<span class="sc">$</span>avg_time_lap)</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">&#39;blue&#39;</span>)</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p>now that we have finished plotting lets look at our model performance</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>randomforest_performance <span class="ot">&lt;-</span> randomforest_tune_res <span class="sc">%&gt;%</span> <span class="fu">show_best</span>(<span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(randomforest_performance)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 9
+##    mtry trees min_n .metric .estimator  mean     n std_err .config              
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+## 1     6  1000    40 rmse    standard    1.32    25  0.0327 Preprocessor1_Model16</code></pre>
+<p>The mean RMSE is 1.31, which is not significant</p>
+<p>The LASSO model had the lowest RMSE, which even though is not extremely significant, still puts it in a position to be chosen as the most meaningful, thus we will choose it as our final model</p>
+<div id="section-5" class="section level40">
+<p class="heading"></p>
+<p>#final model (LASSO) fitting ########################################</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lets restart our parallel processing</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>cluster<span class="ot">&lt;-</span> <span class="fu">makePSOCKcluster</span>(<span class="dv">5</span>)</span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(<span class="dv">5</span>)</span></code></pre></div>
+<p>Now we will fit on the training set evaluating with the test data</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>LASSO_fit_final <span class="ot">&lt;-</span>best_lasso_wf <span class="sc">%&gt;%</span> <span class="fu">last_fit</span>(data_split)</span></code></pre></div>
+<p>We will now use a trained workflow to predict using our test data</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>final_test_performance<span class="ot">&lt;-</span>LASSO_fit_final <span class="sc">%&gt;%</span> <span class="fu">collect_predictions</span>()</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_test_performance)</span></code></pre></div>
+<pre><code>## # A tibble: 77 × 5
+##    id               .pred  .row avg_time_lap .config             
+##    &lt;chr&gt;            &lt;dbl&gt; &lt;int&gt;        &lt;dbl&gt; &lt;chr&gt;               
+##  1 train/test split  29.4     1         28.1 Preprocessor1_Model1
+##  2 train/test split  29.4     2         28.4 Preprocessor1_Model1
+##  3 train/test split  29.3     7         29.0 Preprocessor1_Model1
+##  4 train/test split  29.1     9         29.3 Preprocessor1_Model1
+##  5 train/test split  29.4    10         29.5 Preprocessor1_Model1
+##  6 train/test split  29.5    11         30.0 Preprocessor1_Model1
+##  7 train/test split  29.5    12         30.1 Preprocessor1_Model1
+##  8 train/test split  29.5    13         30.3 Preprocessor1_Model1
+##  9 train/test split  32.8    20         32.6 Preprocessor1_Model1
+## 10 train/test split  33.0    24         33.1 Preprocessor1_Model1
+## # … with 67 more rows</code></pre>
+<p>We will also collect our metrics since it tells us more information</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>final_test_performance_RMSE <span class="ot">&lt;-</span> LASSO_fit_final <span class="sc">%&gt;%</span> <span class="fu">collect_metrics</span>()</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_test_performance_RMSE)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 4
+##   .metric .estimator .estimate .config             
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+## 1 rmse    standard       0.813 Preprocessor1_Model1
+## 2 rsq     standard       0.978 Preprocessor1_Model1</code></pre>
+<p>Finally we will turn of our paralell processing one last time When comparing the prediction of our final model with the actual data, it appears somewhat close but could definitely be better, which indicates that we mostly avoided overfitting, but there may be one or two things we could improve</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cluster)</span></code></pre></div>
+<p>unfortunately, when we examine the RMSE of our data we can see that it performs similarly as with the last data. While this shows the model is fairly consistent it still indicates that the model is not an adequate fit for our data</p>
+<p>We will finally plot our final models predicted compared with observed values and another plot for residuals</p>
+<p>predicted versus observed</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(final_test_performance<span class="sc">$</span>.pred, test_data<span class="sc">$</span>avg_time_lap, </span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span> (<span class="dv">10</span>, <span class="dv">50</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">50</span>))</span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
+<p>residual plot</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(final_test_performance<span class="sc">$</span>.pred<span class="sc">-</span>test_data<span class="sc">$</span>avg_time_lap)</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<p><img src="MarbleRacingExploration_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
+<p>While the LASSO model performed best, there appears to be a few things that we can improve upon to make the model fit better. Additionally, the track length feature could be used as another, perhaps more adequate, measure of model performance.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
