@@ -1,8 +1,8 @@
 ---
 title: "Flu Data Exploration"
 output:
-   html_document:
-   toc: FALSE
+  html_document:
+    toc: FALSE
 ---
 This particular exploration deals with data collected about flu symptoms,
 we will examine the data further, pre-process to enable less interference 

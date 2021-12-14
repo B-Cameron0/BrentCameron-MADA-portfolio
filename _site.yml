@@ -4,7 +4,7 @@ output:
   html_document:
     theme: cerulean
     highlight: zenburn
-    toc: false
+    toc: FALSE
 navbar:
   type: inverse
   title: "My Data Analysis Portfolio"
@@ -23,6 +23,6 @@ navbar:
           href: ./FluData.html
         - text: "Marble Racing"
           href: ./MarbleRacingExploration.html
-      right:
+  right:
     - icon: fa-github fa-lg
       href: https://github.com/B-Cameron0/BrentCameron-MADA-portfolio

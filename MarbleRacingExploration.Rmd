@@ -1,8 +1,8 @@
 ---
 title: "Marble Racing Data Exploration"
 output: 
-   html_document:
-   toc: FALSE
+  html_document:
+    toc: FALSE
 ---
 
 Before we begin let's load some packages that we will need for the data 
@@ -50,9 +50,11 @@ view the individual variables
 skim(marbles)
 ```
 
-####################################
-#Data Examination/ Cleaning
-####################################
+
+*DATA EXAMINATION/CLEANING*
+
+
+
 
 There are several variables that do not seem significant, for instance, notes is 
 comprised of almost exlusively NA variables, while variables such as 
@@ -103,9 +105,9 @@ Now we drop all "NA" data from our variables
 marbles_cleaned <- marbles_chosen %>% na.omit()
 ```
 
-##################
-#Exploration
-##################
+
+*EXPLORATION*
+
 
 With our basic cleaning completed we will turn to examining our data more closely
 to identify the best predictor variables for our models
@@ -137,9 +139,9 @@ It seems that the most common number of laps is seven while the most common
 track length is 15 meters
 
 We will use avg_time_lap for our main predictor
-#######################
-#Analysis
-#######################
+
+*Analysis*
+
 
 Now that we have finished examining our data, we will start our analysis by
 separating our data into a training set for tuning and evaluating the models,
@@ -169,9 +171,8 @@ recipe_avg_time_lap <-recipe(avg_time_lap ~ ., data = train_data) %>%
                   step_dummy(all_nominal_predictors())
 ```
 
-#######################
-#Tuning and Modeling
-#######################
+*Tuning and Modeling*
+
 Now that we have decided on what our main predictor variable will be 
 (avg_time_lap) and created our data sets (training and test), we can begin 
 tuning and modeling
@@ -186,9 +187,10 @@ Our steps should be as follows...
 Code Used for Tree model can be found from Tidymodels Tutorial 
 https://www.tidymodels.org/start/tuning/
 
-####################################
-#NULL MODEL
-####################################
+
+*NULL MODEL*
+
+
 Before we can adequately assess if any of our models posess good fit of our data
 we need to first create our null model that we can compare the rest of our models
 to, if none of our other models perform better than the Null, they are not worth 
@@ -221,9 +223,8 @@ test_null_recipe %>% augment(newdata = test_data) %>%
 
 When comparing our models, if the RMSE (our chosen measure of significance) of our other models is worse than what the null model 
 
-####################################
-#SINGLE TREE MODEL
-####################################
+*SINGLE TREE MODEL*
+
 We will now start with our first comparison model (the single tree model)
 ```{r}
 #Specify Model
@@ -329,9 +330,10 @@ print(tree_model_performance)
 
 The null tree and decision tree model perform very similarly, with the new model
 performing only slightly better than the null, lets examine the other models
-#########################################
-#LASSO
-#########################################
+
+
+*LASSO*
+
 Now we will construct a LASSO model
 code used from https://www.tidymodels.org/start/case-study/
 
@@ -445,10 +447,10 @@ lasso_performance <- lasso_tune_res %>%
 print(lasso_performance)
 ```
 
-The Lasso model seems to have better fit than than null, we will continue with out last #model to determine if it is better
-################################
-#RANDOMFOREST
-################################
+The Lasso model seems to have better fit than than null, we will continue with out 
+
+*RANDOMFOREST*
+
 Both of our past models have not extremely significant fit, we will now repeat the
 steps with a random forest model in the hopes of finding significance
 
@@ -566,9 +568,8 @@ The mean RMSE is 1.31, which is not significant
 The LASSO model had the lowest RMSE, which even though is not extremely significant, still puts it in a position to be chosen as the 
 most meaningful, thus we will choose it as our final model
 
-########################################
-#final model (LASSO) fitting
-########################################
+
+*FINAL MODEL (LASSO) FITTING*
 
 ```{r}
 #lets restart our parallel processing

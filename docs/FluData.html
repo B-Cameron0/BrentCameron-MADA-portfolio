@@ -16,7 +16,7 @@
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -30,8 +30,6 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -44,17 +42,101 @@
   ul.task-list{list-style: none;}
     </style>
 
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
 
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -270,15 +352,14 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
-<li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
   <a href="https://github.com/B-Cameron0/BrentCameron-MADA-portfolio">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -294,8 +375,8 @@ $(document).ready(function () {
 
 
 <p>This particular exploration deals with data collected about flu symptoms, we will examine the data further, pre-process to enable less interference between our data, and tune, fit, and model with a single tree, LASSO, and random forest respectively</p>
-<pre class="r"><code>#First we need to load all required packages 
-library(tidyverse) #for streamlining manipulating data</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First we need to load all required packages </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co">#for streamlining manipulating data</span></span></code></pre></div>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
 ## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
@@ -304,7 +385,7 @@ library(tidyverse) #for streamlining manipulating data</code></pre>
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(tidymodels) # for streamlining fitting data to models</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels) <span class="co"># for streamlining fitting data to models</span></span></code></pre></div>
 <pre><code>## Registered S3 method overwritten by &#39;tune&#39;:
 ##   method                   from   
 ##   required_pkgs.model_spec parsnip</code></pre>
@@ -323,17 +404,17 @@ library(tidyverse) #for streamlining manipulating data</code></pre>
 ## x yardstick::spec() masks readr::spec()
 ## x recipes::step()   masks stats::step()
 ## • Use tidymodels_prefer() to resolve common conflicts.</code></pre>
-<pre class="r"><code>library(broom) #for cleaning up output from lm()
-library(here) #for data loading/saving</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="co">#for cleaning up output from lm()</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here) <span class="co">#for data loading/saving</span></span></code></pre></div>
 <pre><code>## here() starts at /Users/WWBD/MADA/BrentCameron-MADA-portfolio</code></pre>
-<pre class="r"><code>library(ggplot2) #for plotting
-library(rpart) #for fitting tree model</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co">#for plotting</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart) <span class="co">#for fitting tree model</span></span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;rpart&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:dials&#39;:
 ## 
 ##     prune</code></pre>
-<pre class="r"><code>library(glmnet) #for fitting LASSO model</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet) <span class="co">#for fitting LASSO model</span></span></code></pre></div>
 <pre><code>## Loading required package: Matrix</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;Matrix&#39;</code></pre>
@@ -341,21 +422,21 @@ library(rpart) #for fitting tree model</code></pre>
 ## 
 ##     expand, pack, unpack</code></pre>
 <pre><code>## Loaded glmnet 4.1-3</code></pre>
-<pre class="r"><code>library(ranger) #for fitting random forest model
-library(vip)</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ranger) <span class="co">#for fitting random forest model</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vip)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;vip&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:utils&#39;:
 ## 
 ##     vi</code></pre>
-<pre class="r"><code>#then we need to input the location of the data
-data_location &lt;- here::here(&quot;Data&quot;,&quot;processed_data&quot;,&quot;exploration.rds&quot;)
-
-#load data. 
-mydata &lt;- readRDS(data_location)
-
-#Basic examination of our data
-glimpse(mydata)</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#then we need to input the location of the data</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;Data&quot;</span>,<span class="st">&quot;processed_data&quot;</span>,<span class="st">&quot;exploration.rds&quot;</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load data. </span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(data_location)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Basic examination of our data</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mydata)</span></code></pre></div>
 <pre><code>## Rows: 730
 ## Columns: 32
 ## $ SwollenLymphNodes &lt;fct&gt; Yes, Yes, Yes, Yes, Yes, No, No, No, Yes, No, Yes, Y…
@@ -390,35 +471,35 @@ glimpse(mydata)</code></pre>
 ## $ Vomit             &lt;fct&gt; No, No, No, No, No, No, Yes, No, No, No, Yes, Yes, N…
 ## $ Wheeze            &lt;fct&gt; No, No, No, Yes, No, Yes, No, No, No, No, No, Yes, N…
 ## $ BodyTemp          &lt;dbl&gt; 98.3, 100.4, 100.8, 98.8, 100.5, 98.4, 102.5, 98.4, …</code></pre>
-<pre class="r"><code>###################################
-#Part 1- Pre-Processing
-###################################
-#We will remove several variables that have yes/no versions while keeping the 
-#versions of the variables that have multiple levels to reduce potential 
-#confounding
-mydata2 &lt;- mydata %&gt;%
-  select(!c(WeaknessYN,CoughYN, CoughYN2, MyalgiaYN))
-
-#Mydata2 now shows that the number of variables has been reduced by 4, which
-#is what we want, now we will code the 3 symptom severity (ordinal) factors
-#as ordered and verify the correct order of none/mild/moderate/severe
-mydata3 &lt;- mydata2 %&gt;%
-  mutate(Weakness = factor(Weakness, levels = c(&quot;None&quot;, &quot;Mild&quot;, &quot;Moderate&quot;,&quot;Severe&quot;), ordered = TRUE))%&gt;%
-  mutate(CoughIntensity = factor(CoughIntensity, levels = c(&quot;None&quot;, &quot;Mild&quot;, &quot;Moderate&quot;,&quot;Severe&quot;), ordered = TRUE)) %&gt;%
-  mutate(Myalgia = factor(Myalgia, levels = c(&quot;None&quot;, &quot;Mild&quot;, &quot;Moderate&quot;,&quot;Severe&quot;), ordered = TRUE))
-
-#Now that we have hopefully coded the variables to be ordered we will need to 
-#verify that they have been changed
-is.ordered(mydata3$Weakness)</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">###################################</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Part 1- Pre-Processing</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">###################################</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#We will remove several variables that have yes/no versions while keeping the </span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">#versions of the variables that have multiple levels to reduce potential </span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">#confounding</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>mydata2 <span class="ot">&lt;-</span> mydata <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(WeaknessYN,CoughYN, CoughYN2, MyalgiaYN))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Mydata2 now shows that the number of variables has been reduced by 4, which</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">#is what we want, now we will code the 3 symptom severity (ordinal) factors</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co">#as ordered and verify the correct order of none/mild/moderate/severe</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>mydata3 <span class="ot">&lt;-</span> mydata2 <span class="sc">%&gt;%</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Weakness =</span> <span class="fu">factor</span>(Weakness, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;None&quot;</span>, <span class="st">&quot;Mild&quot;</span>, <span class="st">&quot;Moderate&quot;</span>,<span class="st">&quot;Severe&quot;</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">CoughIntensity =</span> <span class="fu">factor</span>(CoughIntensity, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;None&quot;</span>, <span class="st">&quot;Mild&quot;</span>, <span class="st">&quot;Moderate&quot;</span>,<span class="st">&quot;Severe&quot;</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Myalgia =</span> <span class="fu">factor</span>(Myalgia, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;None&quot;</span>, <span class="st">&quot;Mild&quot;</span>, <span class="st">&quot;Moderate&quot;</span>,<span class="st">&quot;Severe&quot;</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Now that we have hopefully coded the variables to be ordered we will need to </span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">#verify that they have been changed</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="fu">is.ordered</span>(mydata3<span class="sc">$</span>Weakness)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is.ordered(mydata3$CoughIntensity)</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.ordered</span>(mydata3<span class="sc">$</span>CoughIntensity)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is.ordered(mydata3$Myalgia)</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.ordered</span>(mydata3<span class="sc">$</span>Myalgia)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>#Now that we have ordered the variables correctly we will examine our other 
-#features. Two of our variables has less than 50 observations and are thus 
-#unbalanced, we will need to remove them to aid in accurate data modeling
-summary(mydata3)</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Now that we have ordered the variables correctly we will examine our other </span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#features. Two of our variables has less than 50 observations and are thus </span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#unbalanced, we will need to remove them to aid in accurate data modeling</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mydata3)</span></code></pre></div>
 <pre><code>##  SwollenLymphNodes ChestCongestion ChillsSweats NasalCongestion Sneeze   
 ##  No :418           No :323         No :130      No :167         No :339  
 ##  Yes:312           Yes:407         Yes:600      Yes:563         Yes:391  
@@ -454,14 +535,14 @@ summary(mydata3)</code></pre>
 ##                                Mean   : 98.94  
 ##                                3rd Qu.: 99.30  
 ##                                Max.   :103.10</code></pre>
-<pre class="r"><code>#Hearing and VIsion both have less than 50 recorded observations in their 
-#respective &quot;yes&quot; category so we will remove those two variables
-#Note how we create another data set (mydata4) to allow for easier back and forth
-#between data sets if needed
-mydata4 &lt;- mydata3 %&gt;%
-  select(!c(Hearing, Vision))</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Hearing and VIsion both have less than 50 recorded observations in their </span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co">#respective &quot;yes&quot; category so we will remove those two variables</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Note how we create another data set (mydata4) to allow for easier back and forth</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co">#between data sets if needed</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>mydata4 <span class="ot">&lt;-</span> mydata3 <span class="sc">%&gt;%</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(Hearing, Vision))</span></code></pre></div>
 <p>Now let us verify that everything is correct and the variables are removed</p>
-<pre class="r"><code>glimpse(mydata4)</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mydata4)</span></code></pre></div>
 <pre><code>## Rows: 730
 ## Columns: 26
 ## $ SwollenLymphNodes &lt;fct&gt; Yes, Yes, Yes, Yes, Yes, No, No, No, Yes, No, Yes, Y…
@@ -491,54 +572,54 @@ mydata4 &lt;- mydata3 %&gt;%
 ## $ Wheeze            &lt;fct&gt; No, No, No, Yes, No, Yes, No, No, No, No, No, Yes, N…
 ## $ BodyTemp          &lt;dbl&gt; 98.3, 100.4, 100.8, 98.8, 100.5, 98.4, 102.5, 98.4, …</code></pre>
 <p>Everything looks good, all variables that can affect our models have been removed We will rename the data to a more accessible name</p>
-<pre class="r"><code>finaldata &lt;- mydata4</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>finaldata <span class="ot">&lt;-</span> mydata4</span></code></pre></div>
 <div id="section" class="section level32">
 <p class="heading"></p>
 <p>#Part 2- Analysis ################################</p>
 <p>Now that we have pre-processed our data we can begin our analysis, first we will set our seed</p>
-<pre class="r"><code>set.seed(123)
-
-#We will now split the data by 70% for our training data and 30% for our testing
-data_split &lt;- initial_split(finaldata, prop = 7/10,#7/10 stands for 70% training
-                            strata = BodyTemp) # and the rest (30%) for testing) 
-
-#Now we will organize our sets of training and test data
-train_data &lt;- training(data_split)
-
-test_data &lt;- testing(data_split)
-
-#We will now utilize a 5-fold cross validation, 5 times repeated, we will 
-#stratify on &quot;BodyTemp&quot; for the CV folds
-FoldCV5 &lt;- vfold_cv(train_data, v = 5, repeats = 5, strata = &quot;BodyTemp&quot;)
-
-#Now we will create our recipe for our data and fitting
-#We will code the categorical variables as dummy variables
-recipe_bodytemp &lt;-recipe(BodyTemp ~ ., data = train_data) %&gt;%
-                  step_dummy(all_nominal_predictors())</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now split the data by 70% for our training data and 30% for our testing</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(finaldata, <span class="at">prop =</span> <span class="dv">7</span><span class="sc">/</span><span class="dv">10</span>,<span class="co">#7/10 stands for 70% training</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">strata =</span> BodyTemp) <span class="co"># and the rest (30%) for testing) </span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will organize our sets of training and test data</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now utilize a 5-fold cross validation, 5 times repeated, we will </span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="co">#stratify on &quot;BodyTemp&quot; for the CV folds</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>FoldCV5 <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train_data, <span class="at">v =</span> <span class="dv">5</span>, <span class="at">repeats =</span> <span class="dv">5</span>, <span class="at">strata =</span> <span class="st">&quot;BodyTemp&quot;</span>)</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will create our recipe for our data and fitting</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="co">#We will code the categorical variables as dummy variables</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>recipe_bodytemp <span class="ot">&lt;-</span><span class="fu">recipe</span>(BodyTemp <span class="sc">~</span> ., <span class="at">data =</span> train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span></code></pre></div>
 <div id="section-1" class="section level36">
 <p class="heading"></p>
 <p>#Null Model Performance ####################################</p>
 <p>We need to specify our model before we start computing</p>
-<pre class="r"><code>lm_model &lt;- linear_reg() %&gt;% 
-             set_engine(&#39;lm&#39;) %&gt;%
-             set_mode(&#39;regression&#39;)</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">set_engine</span>(<span class="st">&#39;lm&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">set_mode</span>(<span class="st">&#39;regression&#39;</span>)</span></code></pre></div>
 <p>We will now compute the performance of a null model for our training and test data (doesn’t use any predictor information)</p>
-<pre class="r"><code>#Train Data Computing
-train_null_recipe &lt;- lm(BodyTemp ~ 1, data = train_data)
-
-#Calculating RMSE
-train_null_recipe %&gt;% augment(newdata = train_data) %&gt;%
-                      rmse(truth = BodyTemp, estimate = .fitted)</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Train Data Computing</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>train_null_recipe <span class="ot">&lt;-</span> <span class="fu">lm</span>(BodyTemp <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> train_data)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating RMSE</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>train_null_recipe <span class="sc">%&gt;%</span> <span class="fu">augment</span>(<span class="at">newdata =</span> train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">rmse</span>(<span class="at">truth =</span> BodyTemp, <span class="at">estimate =</span> .fitted)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 3
 ##   .metric .estimator .estimate
 ##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
 ## 1 rmse    standard        1.21</code></pre>
-<pre class="r"><code>#Test Data Computing
-test_null_recipe &lt;- lm(BodyTemp ~ 1, data = test_data)
-
-#Calculating RMSE
-test_null_recipe %&gt;% augment(newdata = test_data) %&gt;%
-  rmse(truth = BodyTemp, estimate = .fitted)</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Test Data Computing</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>test_null_recipe <span class="ot">&lt;-</span> <span class="fu">lm</span>(BodyTemp <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> test_data)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating RMSE</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>test_null_recipe <span class="sc">%&gt;%</span> <span class="fu">augment</span>(<span class="at">newdata =</span> test_data) <span class="sc">%&gt;%</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rmse</span>(<span class="at">truth =</span> BodyTemp, <span class="at">estimate =</span> .fitted)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 3
 ##   .metric .estimator .estimate
 ##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
@@ -552,15 +633,15 @@ test_null_recipe %&gt;% augment(newdata = test_data) %&gt;%
 <div id="section-3" class="section level36">
 <p class="heading"></p>
 <p>#TREE ####################################</p>
-<pre class="r"><code>#Specify Model
-tune_spec_TREE &lt;-
-  decision_tree(
-    cost_complexity = tune(),
-    tree_depth = tune(),
-  ) %&gt;%
-  set_engine(&quot;rpart&quot;) %&gt;%
-  set_mode(&quot;regression&quot;)
-tune_spec_TREE</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Specify Model</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>tune_spec_TREE <span class="ot">&lt;-</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">decision_tree</span>(</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cost_complexity =</span> <span class="fu">tune</span>(),</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tree_depth =</span> <span class="fu">tune</span>(),</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;rpart&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>tune_spec_TREE</span></code></pre></div>
 <pre><code>## Decision Tree Model Specification (regression)
 ## 
 ## Main Arguments:
@@ -568,109 +649,109 @@ tune_spec_TREE</code></pre>
 ##   tree_depth = tune()
 ## 
 ## Computational engine: rpart</code></pre>
-<pre class="r"><code>#We will now define the workflow for the tree 
-workflow_TREE &lt;- workflow() %&gt;%
-            add_model(tune_spec_TREE) %&gt;%
-            add_recipe(recipe_bodytemp) #The recipe command used here is from 
-#line 108 where we discuss creating a recipe for data and fitting
-
-#We will now specify the tuning grid
-grid_TREE &lt;- grid_regular(cost_complexity(),
-                          tree_depth(),
-                          levels = 5)
-grid_TREE
-
-#We will now tune using cross validation and the tune_grid() function
-res_TREE&lt;-
-  workflow_TREE %&gt;%
-  tune_grid(resamples = FoldCV5 , grid = grid_TREE, metrics = metric_set(rmse))
-
-#Now we will run the autoplot() function to look at some diagnostics
-res_TREE %&gt;%
-  autoplot()
-
-#Now we will selecect the best decision tree model
-TOP_TREE &lt;- res_TREE %&gt;% 
-  select_best(&quot;rmse&quot;)
-
-TOP_TREE
-
-#Now we need to finalize the workflow
-workflow_FINAL &lt;- workflow_TREE %&gt;% finalize_workflow(TOP_TREE)
-workflow_FINAL
-
-#Now we will utilize the fit() function to fit to the training data
-fit_FINAL_TREE &lt;- workflow_FINAL %&gt;% last_fit(data_split)
-
-#Now we will collect the data from our fit
-fit_FINAL_TREE %&gt;% collect_metrics()
-
-#We will also collect the predictions
-pred_TREE &lt;- fit_FINAL_TREE %&gt;% collect_predictions()
-
-#We will now make two plots, one that shows model predictions from the tuned
-#model compared to actual outcomes, and one that plots residuals (RMSE)
-pred_tree_plot &lt;- ggplot(data = pred_TREE, aes(x = .pred, y = BodyTemp)) + 
-           geom_point() +
-           labs(title = &quot;Plot Comparing Model Predictions from Tuned to Actual&quot;,
-                x = &quot;Predictions&quot;, y = &quot;Outcomes&quot;)
-#view the plot
-pred_tree_plot
-
-#We need to calculate our residuals before we can plot 
-#Note that the residuals is the difference between our main predictor and the others
-pred_TREE$residuals &lt;- pred_TREE$BodyTemp - pred_TREE$.pred
-
-#Now we will plot our residuals
-resid_tree_plot &lt;- ggplot(data= pred_TREE, aes(x=.pred , y=residuals)) + geom_point() +
-                    labs(title=&quot;Plot of Residuals&quot;,
-                    x=&quot;Predictions&quot;, y= &quot;Residuals&quot;)
-#view the plot
-resid_tree_plot 
-
-#Now we will compare our residual plot to the null model
-tree_model_performance &lt;- res_TREE %&gt;% show_best(n=1)
-print(tree_model_performance)
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now define the workflow for the tree </span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>workflow_TREE <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">add_model</span>(tune_spec_TREE) <span class="sc">%&gt;%</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">add_recipe</span>(recipe_bodytemp) <span class="co">#The recipe command used here is from </span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co">#line 108 where we discuss creating a recipe for data and fitting</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now specify the tuning grid</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>grid_TREE <span class="ot">&lt;-</span> <span class="fu">grid_regular</span>(<span class="fu">cost_complexity</span>(),</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">tree_depth</span>(),</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="dv">5</span>)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>grid_TREE</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now tune using cross validation and the tune_grid() function</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>res_TREE<span class="ot">&lt;-</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>  workflow_TREE <span class="sc">%&gt;%</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(<span class="at">resamples =</span> FoldCV5 , <span class="at">grid =</span> grid_TREE, <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse))</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will run the autoplot() function to look at some diagnostics</span></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>res_TREE <span class="sc">%&gt;%</span></span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will selecect the best decision tree model</span></span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>TOP_TREE <span class="ot">&lt;-</span> res_TREE <span class="sc">%&gt;%</span> </span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_best</span>(<span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>TOP_TREE</span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we need to finalize the workflow</span></span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>workflow_FINAL <span class="ot">&lt;-</span> workflow_TREE <span class="sc">%&gt;%</span> <span class="fu">finalize_workflow</span>(TOP_TREE)</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a>workflow_FINAL</span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will utilize the fit() function to fit to the training data</span></span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a>fit_FINAL_TREE <span class="ot">&lt;-</span> workflow_FINAL <span class="sc">%&gt;%</span> <span class="fu">last_fit</span>(data_split)</span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will collect the data from our fit</span></span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a>fit_FINAL_TREE <span class="sc">%&gt;%</span> <span class="fu">collect_metrics</span>()</span>
+<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a><span class="co">#We will also collect the predictions</span></span>
+<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a>pred_TREE <span class="ot">&lt;-</span> fit_FINAL_TREE <span class="sc">%&gt;%</span> <span class="fu">collect_predictions</span>()</span>
+<span id="cb45-40"><a href="#cb45-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-41"><a href="#cb45-41" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now make two plots, one that shows model predictions from the tuned</span></span>
+<span id="cb45-42"><a href="#cb45-42" aria-hidden="true" tabindex="-1"></a><span class="co">#model compared to actual outcomes, and one that plots residuals (RMSE)</span></span>
+<span id="cb45-43"><a href="#cb45-43" aria-hidden="true" tabindex="-1"></a>pred_tree_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> pred_TREE, <span class="fu">aes</span>(<span class="at">x =</span> .pred, <span class="at">y =</span> BodyTemp)) <span class="sc">+</span> </span>
+<span id="cb45-44"><a href="#cb45-44" aria-hidden="true" tabindex="-1"></a>           <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb45-45"><a href="#cb45-45" aria-hidden="true" tabindex="-1"></a>           <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Plot Comparing Model Predictions from Tuned to Actual&quot;</span>,</span>
+<span id="cb45-46"><a href="#cb45-46" aria-hidden="true" tabindex="-1"></a>                <span class="at">x =</span> <span class="st">&quot;Predictions&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Outcomes&quot;</span>)</span>
+<span id="cb45-47"><a href="#cb45-47" aria-hidden="true" tabindex="-1"></a><span class="co">#view the plot</span></span>
+<span id="cb45-48"><a href="#cb45-48" aria-hidden="true" tabindex="-1"></a>pred_tree_plot</span>
+<span id="cb45-49"><a href="#cb45-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-50"><a href="#cb45-50" aria-hidden="true" tabindex="-1"></a><span class="co">#We need to calculate our residuals before we can plot </span></span>
+<span id="cb45-51"><a href="#cb45-51" aria-hidden="true" tabindex="-1"></a><span class="co">#Note that the residuals is the difference between our main predictor and the others</span></span>
+<span id="cb45-52"><a href="#cb45-52" aria-hidden="true" tabindex="-1"></a>pred_TREE<span class="sc">$</span>residuals <span class="ot">&lt;-</span> pred_TREE<span class="sc">$</span>BodyTemp <span class="sc">-</span> pred_TREE<span class="sc">$</span>.pred</span>
+<span id="cb45-53"><a href="#cb45-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-54"><a href="#cb45-54" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will plot our residuals</span></span>
+<span id="cb45-55"><a href="#cb45-55" aria-hidden="true" tabindex="-1"></a>resid_tree_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span> pred_TREE, <span class="fu">aes</span>(<span class="at">x=</span>.pred , <span class="at">y=</span>residuals)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb45-56"><a href="#cb45-56" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Plot of Residuals&quot;</span>,</span>
+<span id="cb45-57"><a href="#cb45-57" aria-hidden="true" tabindex="-1"></a>                    <span class="at">x=</span><span class="st">&quot;Predictions&quot;</span>, <span class="at">y=</span> <span class="st">&quot;Residuals&quot;</span>)</span>
+<span id="cb45-58"><a href="#cb45-58" aria-hidden="true" tabindex="-1"></a><span class="co">#view the plot</span></span>
+<span id="cb45-59"><a href="#cb45-59" aria-hidden="true" tabindex="-1"></a>resid_tree_plot </span>
+<span id="cb45-60"><a href="#cb45-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-61"><a href="#cb45-61" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will compare our residual plot to the null model</span></span>
+<span id="cb45-62"><a href="#cb45-62" aria-hidden="true" tabindex="-1"></a>tree_model_performance <span class="ot">&lt;-</span> res_TREE <span class="sc">%&gt;%</span> <span class="fu">show_best</span>(<span class="at">n=</span><span class="dv">1</span>)</span>
+<span id="cb45-63"><a href="#cb45-63" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tree_model_performance)</span>
+<span id="cb45-64"><a href="#cb45-64" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-65"><a href="#cb45-65" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-66"><a href="#cb45-66" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-67"><a href="#cb45-67" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-68"><a href="#cb45-68" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-69"><a href="#cb45-69" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-70"><a href="#cb45-70" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-71"><a href="#cb45-71" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-72"><a href="#cb45-72" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-73"><a href="#cb45-73" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-74"><a href="#cb45-74" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-75"><a href="#cb45-75" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-76"><a href="#cb45-76" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-77"><a href="#cb45-77" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-78"><a href="#cb45-78" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-79"><a href="#cb45-79" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-80"><a href="#cb45-80" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-81"><a href="#cb45-81" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-82"><a href="#cb45-82" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-83"><a href="#cb45-83" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-84"><a href="#cb45-84" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-85"><a href="#cb45-85" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-86"><a href="#cb45-86" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-87"><a href="#cb45-87" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-88"><a href="#cb45-88" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-89"><a href="#cb45-89" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-90"><a href="#cb45-90" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-91"><a href="#cb45-91" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-92"><a href="#cb45-92" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-93"><a href="#cb45-93" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-94"><a href="#cb45-94" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-95"><a href="#cb45-95" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-96"><a href="#cb45-96" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-97"><a href="#cb45-97" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-98"><a href="#cb45-98" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-99"><a href="#cb45-99" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-100"><a href="#cb45-100" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-101"><a href="#cb45-101" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-102"><a href="#cb45-102" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb45-103"><a href="#cb45-103" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <pre><code>## # A tibble: 25 × 2
 ##    cost_complexity tree_depth
 ##              &lt;dbl&gt;      &lt;int&gt;
@@ -685,30 +766,30 @@ NA</code></pre>
 ##  9    0.000562              4
 ## 10    0.1                   4
 ## # … with 15 more rows</code></pre>
-<pre class="r"><code>NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>NA
-NA
-NA
-NA
-NA
-NA</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 3
 ##   cost_complexity tree_depth .config              
 ##             &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;                
 ## 1    0.0000000001          1 Preprocessor1_Model01</code></pre>
-<pre class="r"><code>NA
-NA
-NA
-NA</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <pre><code>## ══ Workflow ════════════════════════════════════════════════════════════════════
 ## Preprocessor: Recipe
 ## Model: decision_tree()
@@ -726,46 +807,46 @@ NA</code></pre>
 ##   tree_depth = 1
 ## 
 ## Computational engine: rpart</code></pre>
-<pre class="r"><code>NA
-NA
-NA
-NA
-NA
-NA</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <pre><code>## # A tibble: 2 × 4
 ##   .metric .estimator .estimate .config             
 ##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
 ## 1 rmse    standard    1.19     Preprocessor1_Model1
 ## 2 rsq     standard    0.000889 Preprocessor1_Model1</code></pre>
-<pre class="r"><code>NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
-<pre class="r"><code>NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
-<pre class="r"><code>NA
-NA
-NA
-NA</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 8
 ##   cost_complexity tree_depth .metric .estimator  mean     n std_err .config     
 ##             &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;       
@@ -774,26 +855,26 @@ NA</code></pre>
 <div id="section-4" class="section level41">
 <p class="heading"></p>
 <p>#LASSO ######################################### #Now we will construct a LASSO model #code used from <a href="https://www.tidymodels.org/start/case-study/" class="uri">https://www.tidymodels.org/start/case-study/</a></p>
-<pre class="r"><code>#We will once again start by constructing our model
-lasso_model &lt;- linear_reg() %&gt;%
-  set_mode(&quot;regression&quot;) %&gt;%
-  set_engine(&quot;glmnet&quot;) %&gt;%
-  set_args(penalty = tune(), mixture = 1) 
-
-#Please note that mixture refers to a number between zero and one that is the 
-#proportion of L1 regularization (lasso) in the model. In other, words, because
-#we are using mixture = 1, we are utilizing a &quot;pure&quot; lasso model here
-
-#We will now create our workflow
-lasso_workflow &lt;-workflow() %&gt;%
-  add_model(lasso_model) %&gt;%
-  add_recipe(recipe_bodytemp)
-
-#Now we will tune our LASSO model
-#As our last model took a long time to run, we will utilize parallel computing
-#to make it faster
-
-library(doParallel)</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#We will once again start by constructing our model</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>lasso_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;glmnet&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_args</span>(<span class="at">penalty =</span> <span class="fu">tune</span>(), <span class="at">mixture =</span> <span class="dv">1</span>) </span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Please note that mixture refers to a number between zero and one that is the </span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="co">#proportion of L1 regularization (lasso) in the model. In other, words, because</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a><span class="co">#we are using mixture = 1, we are utilizing a &quot;pure&quot; lasso model here</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now create our workflow</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>lasso_workflow <span class="ot">&lt;-</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(lasso_model) <span class="sc">%&gt;%</span></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_bodytemp)</span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will tune our LASSO model</span></span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a><span class="co">#As our last model took a long time to run, we will utilize parallel computing</span></span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a><span class="co">#to make it faster</span></span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span></code></pre></div>
 <pre><code>## Loading required package: foreach</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;foreach&#39;</code></pre>
@@ -802,50 +883,50 @@ library(doParallel)</code></pre>
 ##     accumulate, when</code></pre>
 <pre><code>## Loading required package: iterators</code></pre>
 <pre><code>## Loading required package: parallel</code></pre>
-<pre class="r"><code>ncores = 5 #Ncores is used to select the number of cores you want to recruit
-#for processing, different computers will naturally have different ideal numbers
-
-cluster &lt;- makePSOCKcluster(5) #make PSOCKcluster stands for creating a sock
-#cluster within the &#39;snow&#39; package, this allowsa for increased computing time
-
-  registerDoParallel(5) #registers parallel backend with foreach package
-  
-  #Now we will create our tuning grid 
-  lasso_reg_grid &lt;- tibble(penalty = 10^seq(-3, 0, length.out = 30))
-  #Now we tune the model
-  lasso_tune_res &lt;- lasso_workflow %&gt;%
-    tune_grid(resamples = FoldCV5,
-              grid = lasso_reg_grid,
-              control = control_grid(save_pred = TRUE),
-              metrics = metric_set(rmse))
-  
-#We will now turn off parallel clustering, the reason we turn the clustering off
-#after each use is to prevent computations and analysis from being slowed in 
-#later data analysis, fitting, modeling, etc.
-  stopCluster(cluster)
-  
-  #We will now evaluate our LASSO model
-  lasso_tune_res %&gt;% autoplot()</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>ncores <span class="ot">=</span> <span class="dv">5</span> <span class="co">#Ncores is used to select the number of cores you want to recruit</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co">#for processing, different computers will naturally have different ideal numbers</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">makePSOCKcluster</span>(<span class="dv">5</span>) <span class="co">#make PSOCKcluster stands for creating a sock</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co">#cluster within the &#39;snow&#39; package, this allowsa for increased computing time</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">registerDoParallel</span>(<span class="dv">5</span>) <span class="co">#registers parallel backend with foreach package</span></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Now we will create our tuning grid </span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>  lasso_reg_grid <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">penalty =</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">0</span>, <span class="at">length.out =</span> <span class="dv">30</span>))</span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Now we tune the model</span></span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>  lasso_tune_res <span class="ot">&lt;-</span> lasso_workflow <span class="sc">%&gt;%</span></span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tune_grid</span>(<span class="at">resamples =</span> FoldCV5,</span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">grid =</span> lasso_reg_grid,</span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">control =</span> <span class="fu">control_grid</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse))</span>
+<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now turn off parallel clustering, the reason we turn the clustering off</span></span>
+<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a><span class="co">#after each use is to prevent computations and analysis from being slowed in </span></span>
+<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a><span class="co">#later data analysis, fitting, modeling, etc.</span></span>
+<span id="cb64-21"><a href="#cb64-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopCluster</span>(cluster)</span>
+<span id="cb64-22"><a href="#cb64-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-23"><a href="#cb64-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#We will now evaluate our LASSO model</span></span>
+<span id="cb64-24"><a href="#cb64-24" aria-hidden="true" tabindex="-1"></a>  lasso_tune_res <span class="sc">%&gt;%</span> <span class="fu">autoplot</span>()</span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<pre class="r"><code>  #Now we will get the tuned model that performs best
-  best_lasso &lt;- lasso_tune_res %&gt;% select_best(metric = &quot;rmse&quot;)
-  #We now finalize our workflow with the best model
-  best_lasso_wf &lt;- lasso_workflow  %&gt;% finalize_workflow(best_lasso)
-  #We now fit our best performing model
-  best_lasso_fit &lt;- best_lasso_wf %&gt;%
-    fit(data = train_data)
-  
-  lasso_pred &lt;- predict(best_lasso_fit, train_data)
-  
-  #Now we will repeat our steps like the past model and plot LASSO variables as
-  #function of tuning parameter
-  
-x &lt;- best_lasso_fit$fit$fit$fit
-plot(x, &quot;lambda&quot;)</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Now we will get the tuned model that performs best</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  best_lasso <span class="ot">&lt;-</span> lasso_tune_res <span class="sc">%&gt;%</span> <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#We now finalize our workflow with the best model</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  best_lasso_wf <span class="ot">&lt;-</span> lasso_workflow  <span class="sc">%&gt;%</span> <span class="fu">finalize_workflow</span>(best_lasso)</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#We now fit our best performing model</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  best_lasso_fit <span class="ot">&lt;-</span> best_lasso_wf <span class="sc">%&gt;%</span></span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(<span class="at">data =</span> train_data)</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  lasso_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(best_lasso_fit, train_data)</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Now we will repeat our steps like the past model and plot LASSO variables as</span></span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#function of tuning parameter</span></span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> best_lasso_fit<span class="sc">$</span>fit<span class="sc">$</span>fit<span class="sc">$</span>fit</span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="st">&quot;lambda&quot;</span>)</span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
-<pre class="r"><code>#When a variable is 0 it is no longer being used in the model, thus we are using
-#all variables that are only part of the best fit model
-tidy(extract_fit_parsnip(best_lasso_fit)) %&gt;% filter(estimate !=0)</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#When a variable is 0 it is no longer being used in the model, thus we are using</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="co">#all variables that are only part of the best fit model</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(<span class="fu">extract_fit_parsnip</span>(best_lasso_fit)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(estimate <span class="sc">!=</span><span class="dv">0</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 13 × 3
 ##    term                estimate penalty
 ##    &lt;chr&gt;                  &lt;dbl&gt;   &lt;dbl&gt;
@@ -862,35 +943,35 @@ tidy(extract_fit_parsnip(best_lasso_fit)) %&gt;% filter(estimate !=0)</code></pr
 ## 11 RunnyNose_Yes       -0.0825   0.0574
 ## 12 Nausea_Yes           0.00349  0.0574
 ## 13 Pharyngitis_Yes      0.148    0.0574</code></pre>
-<pre class="r"><code>#Now we plot the observed/predicted and residual plots
-#We will try a new way to plot that does not require calculating the 
-#residuals before hand
-
-#First we will plot with the observe/predicted values
-#This code will plot a line with which we hope to see overlap with 
-#the values, thus signaling that the model is a good fit
-
-#For our x and y limits, the values 97 and 103 were chosen because they allow for
-#the clearest illustration of the values in the plane
-#The abline is used to add lines to the graph 
-plot(lasso_pred$.pred,train_data$BodyTemp, xlim = c(97, 103), ylim = c(97, 103))
-abline(a = 0, b = 1, col = &#39;red&#39;) #b = 1 creates a 45 degree diagonal line</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we plot the observed/predicted and residual plots</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="co">#We will try a new way to plot that does not require calculating the </span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="co">#residuals before hand</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="co">#First we will plot with the observe/predicted values</span></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="co">#This code will plot a line with which we hope to see overlap with </span></span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="co">#the values, thus signaling that the model is a good fit</span></span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a><span class="co">#For our x and y limits, the values 97 and 103 were chosen because they allow for</span></span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="co">#the clearest illustration of the values in the plane</span></span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a><span class="co">#The abline is used to add lines to the graph </span></span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lasso_pred<span class="sc">$</span>.pred,train_data<span class="sc">$</span>BodyTemp, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">97</span>, <span class="dv">103</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">97</span>, <span class="dv">103</span>))</span>
+<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>) <span class="co">#b = 1 creates a 45 degree diagonal line</span></span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
-<pre class="r"><code>#Now our residual plot, note that because we are subtracting the two values 
-#used this time instead of putting them together, since residuals are by 
-#definition the difference between the regular predictors and the chosen predictor
-plot(lasso_pred$.pred-train_data$BodyTemp)
-abline(a=0, b=0, col = &#39;blue&#39;) #b = 0 creates a straight horizontal line</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Now our residual plot, note that because we are subtracting the two values </span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="co">#used this time instead of putting them together, since residuals are by </span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co">#definition the difference between the regular predictors and the chosen predictor</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lasso_pred<span class="sc">$</span>.pred<span class="sc">-</span>train_data<span class="sc">$</span>BodyTemp)</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">0</span>, <span class="at">b=</span><span class="dv">0</span>, <span class="at">col =</span> <span class="st">&#39;blue&#39;</span>) <span class="co">#b = 0 creates a straight horizontal line</span></span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
-<pre class="r"><code>#Similarly to the tree model, neither the observed/predictors plot or the 
-#residuals plot indicates that there is significant alignment with the data
-#meaning that this model is also not significant.
-
-#Let&#39;s look at the performance of the model directly to check this
-lasso_performance &lt;- lasso_tune_res %&gt;%
-                        show_best(n = 1)
-
-print(lasso_performance)</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Similarly to the tree model, neither the observed/predictors plot or the </span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co">#residuals plot indicates that there is significant alignment with the data</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co">#meaning that this model is also not significant.</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Let&#39;s look at the performance of the model directly to check this</span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>lasso_performance <span class="ot">&lt;-</span> lasso_tune_res <span class="sc">%&gt;%</span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">show_best</span>(<span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(lasso_performance)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 7
 ##   penalty .metric .estimator  mean     n std_err .config              
 ##     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
@@ -905,79 +986,79 @@ print(lasso_performance)</code></pre>
 <p>#RANDOMFOREST ################################</p>
 <p>Both of our past models have not shown significant fit, we will now repeat the steps with a random forest model in the hopes of finding significance</p>
 <p><em>Please note that for Random Forest models, “num.threads” and importance is required or else all models will fail</em></p>
-<pre class="r"><code>randomforest_model &lt;- rand_forest() %&gt;%
-  set_args(mtry = tune(),
-  trees = tune(), 
-  min_n = tune()
-  ) %&gt;%
-  #Now we set the engine
-  set_engine(&quot;ranger&quot;, 
-             num.threads = 5,
-             importance = &quot;permutation&quot;) %&gt;%
-  #We select either the continuous or binary classification
-  set_mode(&quot;regression&quot;)
-
-#We will set our workflow once again
-randomforest_workflow &lt;- workflow() %&gt;% 
-  add_model(randomforest_model) %&gt;%
-  add_recipe(recipe_bodytemp)
-
-#We will now repeat our steps as the first two models to specify our tuning grid
-#We will use parallel computing once again to vastly decrease the time it takes 
-#to compute the model- since we have already use code previously to create it
-#we now only need to use our name designation for our cluster and it will resume
-cluster &lt;-makePSOCKcluster(5)
-registerDoParallel(5)
-
-#Now we will tune the grid
-randomforest_grid &lt;- expand.grid(mtry = c(3, 4, 5, 6), min_n = c(40, 50, 60),
-                                 trees = c(500, 1000))
-
-#We will now tune the model while optimizing RMSE
-randomforest_tune_res &lt;- randomforest_workflow %&gt;%
-    tune_grid(resamples = FoldCV5, #This is the name of our previous CV object
-              grid = randomforest_grid,#This is the grid of values we want to try
-              metrics = metric_set(rmse))
-
-#Now we turn off our parallel clustering again to prevent slowing processing
-stopCluster(cluster)
-
-#Now we plot the performance of our different tuning parameters
-randomforest_tune_res %&gt;% autoplot()</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>randomforest_model <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_args</span>(<span class="at">mtry =</span> <span class="fu">tune</span>(),</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">trees =</span> <span class="fu">tune</span>(), </span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_n =</span> <span class="fu">tune</span>()</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Now we set the engine</span></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;ranger&quot;</span>, </span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">num.threads =</span> <span class="dv">5</span>,</span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">importance =</span> <span class="st">&quot;permutation&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#We select either the continuous or binary classification</span></span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a><span class="co">#We will set our workflow once again</span></span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>randomforest_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(randomforest_model) <span class="sc">%&gt;%</span></span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_bodytemp)</span>
+<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now repeat our steps as the first two models to specify our tuning grid</span></span>
+<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a><span class="co">#We will use parallel computing once again to vastly decrease the time it takes </span></span>
+<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a><span class="co">#to compute the model- since we have already use code previously to create it</span></span>
+<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a><span class="co">#we now only need to use our name designation for our cluster and it will resume</span></span>
+<span id="cb72-22"><a href="#cb72-22" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span><span class="fu">makePSOCKcluster</span>(<span class="dv">5</span>)</span>
+<span id="cb72-23"><a href="#cb72-23" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(<span class="dv">5</span>)</span>
+<span id="cb72-24"><a href="#cb72-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-25"><a href="#cb72-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will tune the grid</span></span>
+<span id="cb72-26"><a href="#cb72-26" aria-hidden="true" tabindex="-1"></a>randomforest_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">mtry =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">min_n =</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>),</span>
+<span id="cb72-27"><a href="#cb72-27" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">trees =</span> <span class="fu">c</span>(<span class="dv">500</span>, <span class="dv">1000</span>))</span>
+<span id="cb72-28"><a href="#cb72-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-29"><a href="#cb72-29" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now tune the model while optimizing RMSE</span></span>
+<span id="cb72-30"><a href="#cb72-30" aria-hidden="true" tabindex="-1"></a>randomforest_tune_res <span class="ot">&lt;-</span> randomforest_workflow <span class="sc">%&gt;%</span></span>
+<span id="cb72-31"><a href="#cb72-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tune_grid</span>(<span class="at">resamples =</span> FoldCV5, <span class="co">#This is the name of our previous CV object</span></span>
+<span id="cb72-32"><a href="#cb72-32" aria-hidden="true" tabindex="-1"></a>              <span class="at">grid =</span> randomforest_grid,<span class="co">#This is the grid of values we want to try</span></span>
+<span id="cb72-33"><a href="#cb72-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse))</span>
+<span id="cb72-34"><a href="#cb72-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-35"><a href="#cb72-35" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we turn off our parallel clustering again to prevent slowing processing</span></span>
+<span id="cb72-36"><a href="#cb72-36" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cluster)</span>
+<span id="cb72-37"><a href="#cb72-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-38"><a href="#cb72-38" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we plot the performance of our different tuning parameters</span></span>
+<span id="cb72-39"><a href="#cb72-39" aria-hidden="true" tabindex="-1"></a>randomforest_tune_res <span class="sc">%&gt;%</span> <span class="fu">autoplot</span>()</span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code>#Now we will obtain the best performing model
-best_randomforest &lt;- randomforest_tune_res %&gt;% select_best(metric = &quot;rmse&quot;)
-
-#Finalize the workflow with this model
-best_randomforest_workflow &lt;- randomforest_workflow %&gt;% finalize_workflow(best_randomforest)
-
-#Now we fit the best performing model
-best_randomforest_fit &lt;- best_randomforest_workflow %&gt;% fit(data = train_data)
-randomforest_predict &lt;-predict(best_randomforest_fit, train_data)
-
-#although all variables stay in a random forest model, we can examine which are 
-#the most imoportant using the &#39;vip&#39; package
-x&lt;- best_randomforest_fit$fit$fit$fit
-
-#plot the variables by importance
-vip(x, num_features = 26)</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will obtain the best performing model</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>best_randomforest <span class="ot">&lt;-</span> randomforest_tune_res <span class="sc">%&gt;%</span> <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Finalize the workflow with this model</span></span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>best_randomforest_workflow <span class="ot">&lt;-</span> randomforest_workflow <span class="sc">%&gt;%</span> <span class="fu">finalize_workflow</span>(best_randomforest)</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we fit the best performing model</span></span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>best_randomforest_fit <span class="ot">&lt;-</span> best_randomforest_workflow <span class="sc">%&gt;%</span> <span class="fu">fit</span>(<span class="at">data =</span> train_data)</span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>randomforest_predict <span class="ot">&lt;-</span><span class="fu">predict</span>(best_randomforest_fit, train_data)</span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a><span class="co">#although all variables stay in a random forest model, we can examine which are </span></span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a><span class="co">#the most imoportant using the &#39;vip&#39; package</span></span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span> best_randomforest_fit<span class="sc">$</span>fit<span class="sc">$</span>fit<span class="sc">$</span>fit</span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a><span class="co">#plot the variables by importance</span></span>
+<span id="cb73-16"><a href="#cb73-16" aria-hidden="true" tabindex="-1"></a><span class="fu">vip</span>(x, <span class="at">num_features =</span> <span class="dv">26</span>)</span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
-<pre class="r"><code>#as can be seen from the plot, subjective fever is the most important variable
-#followed by sneezing 
-
-#We will now plot the observed/ predicted and residual plots and compare them
-#we will repeat the same process used as last time
-plot(randomforest_predict$.pred,train_data$BodyTemp, 
-     xlim =c(97, 103), ylim=c(97, 103),
-     abline(a = 0, b = 1, col = &#39;red&#39;))</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">#as can be seen from the plot, subjective fever is the most important variable</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="co">#followed by sneezing </span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now plot the observed/ predicted and residual plots and compare them</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="co">#we will repeat the same process used as last time</span></span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(randomforest_predict<span class="sc">$</span>.pred,train_data<span class="sc">$</span>BodyTemp, </span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span><span class="fu">c</span>(<span class="dv">97</span>, <span class="dv">103</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">97</span>, <span class="dv">103</span>),</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>     <span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>))</span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
-<pre class="r"><code>#residual plot
-plot(randomforest_predict$.pred-train_data$BodyTemp)
-     abline(a = 0, b = 0, col = &#39;blue&#39;)</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">#residual plot</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(randomforest_predict<span class="sc">$</span>.pred<span class="sc">-</span>train_data<span class="sc">$</span>BodyTemp)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">&#39;blue&#39;</span>)</span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-10-4.png" width="672" /></p>
-<pre class="r"><code>#now that we have finished plotting lets look at our model performance
-randomforest_performance &lt;- randomforest_tune_res %&gt;% show_best(n = 1)
-print(randomforest_performance)</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co">#now that we have finished plotting lets look at our model performance</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>randomforest_performance <span class="ot">&lt;-</span> randomforest_tune_res <span class="sc">%&gt;%</span> <span class="fu">show_best</span>(<span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(randomforest_performance)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 9
 ##    mtry trees min_n .metric .estimator  mean     n std_err .config              
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
@@ -987,17 +1068,17 @@ print(randomforest_performance)</code></pre>
 <div id="section-6" class="section level40">
 <p class="heading"></p>
 <p>#final model (LASSO) fitting ########################################</p>
-<pre class="r"><code>#lets restart our parallel processing
-cluster&lt;- makePSOCKcluster(5)
-registerDoParallel(5)
-
-#Now we will fit on the training set evaluating with the test data
-LASSO_fit_final &lt;-best_lasso_wf %&gt;% last_fit(data_split)
-
-#We will now use a trained workflow to predict using our 
-#test data
-final_test_performance&lt;-LASSO_fit_final %&gt;% collect_predictions()
-print(final_test_performance)</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lets restart our parallel processing</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>cluster<span class="ot">&lt;-</span> <span class="fu">makePSOCKcluster</span>(<span class="dv">5</span>)</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(<span class="dv">5</span>)</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we will fit on the training set evaluating with the test data</span></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>LASSO_fit_final <span class="ot">&lt;-</span>best_lasso_wf <span class="sc">%&gt;%</span> <span class="fu">last_fit</span>(data_split)</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a><span class="co">#We will now use a trained workflow to predict using our </span></span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a><span class="co">#test data</span></span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>final_test_performance<span class="ot">&lt;-</span>LASSO_fit_final <span class="sc">%&gt;%</span> <span class="fu">collect_predictions</span>()</span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_test_performance)</span></code></pre></div>
 <pre><code>## # A tibble: 222 × 5
 ##    id               .pred  .row BodyTemp .config             
 ##    &lt;chr&gt;            &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;               
@@ -1012,32 +1093,32 @@ print(final_test_performance)</code></pre>
 ##  9 train/test split  99.4    29     99.7 Preprocessor1_Model1
 ## 10 train/test split  99.3    32     98.8 Preprocessor1_Model1
 ## # … with 212 more rows</code></pre>
-<pre class="r"><code>final_test_performance_RMSE &lt;- LASSO_fit_final %&gt;% collect_metrics()
-print(final_test_performance_RMSE)</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>final_test_performance_RMSE <span class="ot">&lt;-</span> LASSO_fit_final <span class="sc">%&gt;%</span> <span class="fu">collect_metrics</span>()</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_test_performance_RMSE)</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 4
 ##   .metric .estimator .estimate .config             
 ##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
 ## 1 rmse    standard      1.15   Preprocessor1_Model1
 ## 2 rsq     standard      0.0291 Preprocessor1_Model1</code></pre>
-<pre class="r"><code>#When comparing the prediction of our final model with the actual data, it 
-#appears to be rather close, which indicates that we thankfully avoided 
-#overfitting the data
-
-#unfortunately, when we examine the RMSE of our data we can see that it performs
-#exactly the same as with the last data. While this shows the model is consistent
-#it still indicates that the model is not an adequate fit for our data
-
-#We will finally plot our final models predicted compared with observed values
-#and another plot for residuals
-
-#predicted versus observed 
-plot(final_test_performance$.pred, test_data$BodyTemp, 
-     xlim = c (97, 103), ylim = c(97, 103))
-     abline(a = 0, b = 1, col = &#39;red&#39;)</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co">#When comparing the prediction of our final model with the actual data, it </span></span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="co">#appears to be rather close, which indicates that we thankfully avoided </span></span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="co">#overfitting the data</span></span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a><span class="co">#unfortunately, when we examine the RMSE of our data we can see that it performs</span></span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a><span class="co">#exactly the same as with the last data. While this shows the model is consistent</span></span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a><span class="co">#it still indicates that the model is not an adequate fit for our data</span></span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a><span class="co">#We will finally plot our final models predicted compared with observed values</span></span>
+<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a><span class="co">#and another plot for residuals</span></span>
+<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-12"><a href="#cb82-12" aria-hidden="true" tabindex="-1"></a><span class="co">#predicted versus observed </span></span>
+<span id="cb82-13"><a href="#cb82-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(final_test_performance<span class="sc">$</span>.pred, test_data<span class="sc">$</span>BodyTemp, </span>
+<span id="cb82-14"><a href="#cb82-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span> (<span class="dv">97</span>, <span class="dv">103</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">97</span>, <span class="dv">103</span>))</span>
+<span id="cb82-15"><a href="#cb82-15" aria-hidden="true" tabindex="-1"></a>     <span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre class="r"><code>#residual plot
-plot(final_test_performance$.pred-test_data$BodyTemp)
-     abline(a = 0, b = 0, col = &#39;red&#39;)</code></pre>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co">#residual plot</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(final_test_performance<span class="sc">$</span>.pred<span class="sc">-</span>test_data<span class="sc">$</span>BodyTemp)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
 <p><img src="FluData_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
 </div>
 </div>
