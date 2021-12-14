@@ -1,5 +1,5 @@
 # My website and data analysis portfolio
 
-You seem to have clicked on the README document!
+![](https://github.com/[B-Cameron0]/[BrentCameron-MADA-portfolio]/[Images]/Kenobi.jpg?raw=true)
 
-![](/Users/WWBD/MADA/BrentCameron-MADA-portfolio/Images/Kenobi.jpg)
+
